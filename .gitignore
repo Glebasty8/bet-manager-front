@@ -1,0 +1,9 @@
+.vscode/
+.idea/
+node_modules/*
+.env
+.env.production
+.env.development.local
+yarn-error.log
+package-lock.json
+.next
