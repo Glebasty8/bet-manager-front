@@ -1,17 +1,11 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import Router from 'next/router';
-import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
-import FormControl from "@material-ui/core/FormControl";
-import Checkbox from "@material-ui/core/Checkbox";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Button from '@material-ui/core/Button';
-import { Formik } from 'formik';
-import * as yup from 'yup';
 import { withStyles } from '@material-ui/styles';
 
 import theme from 'src/theme';
 import api from 'src/api';
+import CreateOrUpdateBetForm from 'components/CreateOrUpdateBetForm';
 
 const styles = {
     toolbar: {
@@ -25,18 +19,10 @@ const styles = {
         flexGrow: 1,
         padding: theme.spacing(3),
     },
-    fab: {
-        margin: theme.spacing(1),
-    },
-    textField: {
-        marginLeft: theme.spacing(1),
-        marginRight: theme.spacing(1),
-        width: 400,
-    },
 };
 
-class Bets extends PureComponent {
-    static async getInitialProps({ req }) {
+class Bets extends Component {
+    static async getInitialProps() {
         const res = await api.getBets();
         const bets = await res.json();
         return { bets };
@@ -59,9 +45,6 @@ class Bets extends PureComponent {
 
     render() {
         const { classes } = this.props;
-        console.log('this.props', this.props);
-        const profile = this.props.auth.getProfile();
-        console.log('profile', profile);
 
         return (
             <main className={classes.content}>
@@ -69,139 +52,9 @@ class Bets extends PureComponent {
                 <Typography variant="h3" align="center">
                     New Bet
                 </Typography>
-                <Formik
-                    initialValues={{
-                        sportType: '',
-                        competition: '',
-                        forecast: '',
-                        betAmount: undefined,
-                        coefficient: undefined,
-                        isFree: false
-                    }}
+                <CreateOrUpdateBetForm
                     onSubmit={this.createBet}
-                    validationSchema={() => yup.object().shape({
-                        sportType: yup
-                            .string()
-                            .required('Sport is required'),
-                        competition: yup
-                            .string()
-                            .required('Competition is required'),
-                        forecast: yup
-                            .string()
-                            .required('Forecast is required'),
-                        betAmount: yup
-                            .number()
-                            .positive('Value should be positive')
-                            .required('Bet Amount is required'),
-                        coefficient: yup
-                            .number()
-                            .positive('Value should be positive')
-                            .required('Coefficient is required')
-                    })}
-                >
-                    {({
-                          handleSubmit,
-                          handleChange,
-                          handleBlur,
-                          errors,
-                          values,
-                          touched,
-                          isSubmitting
-                      }) => {
-                        return (
-                            <form
-                                onSubmit={handleSubmit}
-                                className={`flex column align-center`}
-                            >
-                                <FormControl>
-                                    <TextField
-                                        autoComplete="off"
-                                        name="sportType"
-                                        label="Sport"
-                                        className={classes.textField}
-                                        margin="normal"
-                                        value={values.sport}
-                                        onChange={handleChange}
-                                        error={!!touched.sportType && !!errors.sportType}
-                                        helperText={touched.sportType && errors.sportType ? errors.sportType : ''}
-                                        onBlur={handleBlur}
-                                    />
-                                    <TextField
-                                        autoComplete="off"
-                                        name="competition"
-                                        label="Competition"
-                                        className={classes.textField}
-                                        margin="normal"
-                                        value={values.competition}
-                                        onChange={handleChange}
-                                        error={!!touched.competition && !!errors.competition}
-                                        helperText={touched.competition && errors.competition ? errors.competition : ''}
-                                        onBlur={handleBlur}
-                                    />
-                                    <TextField
-                                        autoComplete="off"
-                                        name="forecast"
-                                        label="Forecast"
-                                        className={classes.textField}
-                                        margin="normal"
-                                        value={values.forecast}
-                                        onChange={handleChange}
-                                        error={!!touched.forecast && !!errors.forecast}
-                                        helperText={touched.forecast && errors.forecast ? errors.forecast : ''}
-                                        onBlur={handleBlur}
-                                    />
-                                    <TextField
-                                        type="number"
-                                        autoComplete="off"
-                                        name="betAmount"
-                                        label="Bet Amount"
-                                        className={classes.textField}
-                                        margin="normal"
-                                        value={values.betAmount}
-                                        onChange={handleChange}
-                                        error={!!touched.betAmount && !!errors.betAmount}
-                                        helperText={touched.betAmount && errors.betAmount ? errors.betAmount : ''}
-                                        onBlur={handleBlur}
-                                    />
-                                    <TextField
-                                        type="number"
-                                        autoComplete="off"
-                                        name="coefficient"
-                                        label="Coefficient"
-                                        className={classes.textField}
-                                        margin="normal"
-                                        value={values.coefficient}
-                                        onChange={handleChange}
-                                        error={!!touched.coefficient && !!errors.coefficient}
-                                        helperText={touched.coefficient && errors.coefficient ? errors.coefficient : ''}
-                                        onBlur={handleBlur}
-                                    />
-                                    <FormControlLabel
-                                        control={
-                                            <Checkbox
-                                                checked={values.isFree}
-                                                onChange={handleChange}
-                                                value={values.isFree}
-                                                name="isFree"
-                                                color="primary"
-                                            />
-                                        }
-                                        label="Free"
-                                    />
-                                    <Button
-                                        type="submit"
-                                        variant="contained"
-                                        color="primary"
-                                        className={classes.button}
-                                        disabled={isSubmitting}
-                                    >
-                                        Create Bet
-                                    </Button>
-                                </FormControl>
-                            </form>
-                        )
-                    }}
-                </Formik>
+                />
             </main>
         );
     }

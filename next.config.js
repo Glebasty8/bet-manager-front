@@ -1,14 +1,16 @@
 // next.config.js
+const path = require('path');
 const { parsed: localEnv } = require('dotenv').config();
 const webpack = require('webpack');
-const path = require('path');
 const withSass = require('@zeit/next-sass');
 const withPlugins = require("next-compose-plugins");
 const Dotenv = require('dotenv-webpack');
+const withImages = require('next-images');
 
 module.exports = withPlugins(
     [
-        withSass
+        withSass,
+        withImages
     ],
     {
         webpack (config, options) {

@@ -11,6 +11,7 @@ import Button from '@material-ui/core/Button';
 
 import theme from 'src/theme';
 import api from 'src/api';
+import ArbitroIcon from '../static/svg/arbitro.svg';
 
 const styles = () => {
     return {
@@ -28,6 +29,9 @@ const styles = () => {
         },
         button: {
             margin: theme.spacing(1),
+        },
+        icon: {
+            width: '350px'
         }
     }
 };
@@ -46,6 +50,11 @@ class ForgotPassword extends Component {
                 <Typography variant="h3" gutterBottom align="left">
                     Forgot Password?
                 </Typography>
+                <img
+                    className={classes.icon}
+                    src={ArbitroIcon}
+                    alt="Arbitrator"
+                />
                 <Formik
                     initialValues={{
                         email: '',
@@ -56,11 +65,14 @@ class ForgotPassword extends Component {
                             .email('Invalid email address')
                             .required('Email is required!'),
                     })}
-                    onSubmit={async (values, { setSubmitting }) => {
-                        console.log('values', values);
-                        const res = await api.login(values);
-                        if (user.token) {
-                            Router.push('/users')
+                    onSubmit={async (values, { setSubmitting, setStatus }) => {
+                        const res = await api.forgotPassword(values);
+                        console.log('res', res);
+                        if (res.ok && res.status === 200) {
+                            Router.push('/successfully-sent')
+                        } else {
+                            const { message } = await res.json();
+                            setStatus(message);
                         }
                         setSubmitting(false);
                     }}
@@ -72,7 +84,9 @@ class ForgotPassword extends Component {
                           handleChange,
                           errors,
                           handleBlur,
-                          touched
+                          touched,
+                          status,
+                          setStatus
                       }) => {
                         return (
                             <form autoComplete="off" onSubmit={handleSubmit}>
@@ -80,6 +94,7 @@ class ForgotPassword extends Component {
                                     We’ll email you a link to reset your password
                                 </Typography>
                                 <FormControl>
+                                    <span className="error centred">{status}</span>
                                     <TextField
                                         autoComplete="off"
                                         name="email"
@@ -87,7 +102,10 @@ class ForgotPassword extends Component {
                                         className={classes.textField}
                                         margin="normal"
                                         value={values.email}
-                                        onChange={handleChange}
+                                        onChange={(e) => {
+                                            setStatus('');
+                                            handleChange(e);
+                                        }}
                                         onBlur={handleBlur}
                                         error={!!touched.email && !!errors.email}
                                         helperText={errors.email && touched.email ? errors.email : ''}

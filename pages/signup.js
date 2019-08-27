@@ -44,6 +44,7 @@ class Signup extends Component {
                 </Typography>
                 <Formik
                     initialValues={{
+                        userName: '',
                         email: '',
                         password: ''
                     }}

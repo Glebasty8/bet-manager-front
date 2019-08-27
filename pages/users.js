@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import compose from 'recompose/compose';
 import moment from 'moment';
 import Router from 'next/router';
 import { withStyles } from '@material-ui/core/styles';
@@ -13,6 +14,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 
 import theme from 'src/theme';
 import api from 'src/api';
+import { withTranslation } from "src/utils/i18n";
 
 const styles = {
     toolbar: {
@@ -49,14 +51,14 @@ class Users extends Component {
     };
 
     render() {
-        const { classes, users = [] } = this.props;
+        const { classes, users = [], t } = this.props;
         console.log('this.props', this.props);
 
         return (
             <main className={classes.content}>
                 <div className={classes.toolbar} />
                 <Typography variant="h1" paragraph>
-                   Users
+                    {t('h1')}
                 </Typography>
                 <Paper className={classes.root}>
                     <Table className={classes.table}>
@@ -65,7 +67,6 @@ class Users extends Component {
                                 <TableCell>#</TableCell>
                                 <TableCell>Name</TableCell>
                                 <TableCell align="left">Email</TableCell>
-                                <TableCell align="left">Age</TableCell>
                                 <TableCell align="left">Country</TableCell>
                                 <TableCell align="left">Role</TableCell>
                                 <TableCell align="left">Created At</TableCell>
@@ -73,14 +74,13 @@ class Users extends Component {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {users.map(({ id, userName, email, age, country = '', role, createAt }) => (
+                            {users.map(({ id, userName, email, country = '', role, createAt }) => (
                                 <TableRow key={id}>
                                     <TableCell align="left">{id}</TableCell>
                                     <TableCell component="th" scope="row">
                                         {userName}
                                     </TableCell>
                                     <TableCell align="left">{email}</TableCell>
-                                    <TableCell align="left">{age}</TableCell>
                                     <TableCell align="left">{country}</TableCell>
                                     <TableCell align="left">{role}</TableCell>
                                     <TableCell align="left">
@@ -102,5 +102,9 @@ class Users extends Component {
     }
 }
 
-export default withStyles(styles)(Users);
+
+export default compose(
+    withStyles(styles),
+    withTranslation(['users'])
+)(Users);
 

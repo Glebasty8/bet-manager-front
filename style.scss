@@ -18,6 +18,22 @@ body {
   cursor: pointer;
 }
 
+.relative {
+  position: relative;
+}
+
+.pending {
+  background: #FFCD5E;
+}
+
+.succeeded {
+  background: #44F7B2;
+}
+
+.failed {
+ background: #FE4D62;
+}
+
 .flex {
   display: flex;
 }
@@ -42,6 +58,10 @@ body {
   justify-content: center;
 }
 
+.justify-between {
+  justify-content: space-between;
+}
+
 .justify-start {
   justify-content: flex-start;
 }
@@ -59,4 +79,38 @@ body {
   height: 100%;
 }
 
+.error {
+  color: #ff1744
+}
+
+.centred {
+  text-align: center;
+  font-size: 0.9em;
+}
+
+.loader {
+  width: 100px;
+  height: 100px;
+  animation-name: spin;
+  animation-duration: 5000ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
+.locale-switcher {
+  margin-right: 50px;
+}
+
+.bold {
+  font-weight: 600;
+}
+
+@keyframes spin {
+  from {
+    transform:rotate(0deg);
+  }
+  to {
+    transform:rotate(360deg);
+  }
+}
 

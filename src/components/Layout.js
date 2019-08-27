@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Link from 'next/link';
+import Router from 'next/router';
 import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
+import MenuItem from '@material-ui/core/MenuItem';
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -19,9 +21,14 @@ import ListItemText from '@material-ui/core/ListItemText';
 import UsersIcon from '@material-ui/icons/Accessibility';
 import BetsListIcon from '@material-ui/icons/List';
 import LogoutIcon from '@material-ui/icons/ExitToApp';
+import InfoIcon from '@material-ui/icons/Info';
+import Avatar from '@material-ui/core/Avatar';
+import Select from '@material-ui/core/Select';
+import { deepPurple } from '@material-ui/core/colors';
 
 import AuthService from '../utils/AuthService';
 import withAuth from 'src/utils/withAuth';
+import { i18n } from 'src/utils/i18n';
 
 const drawerWidth = 240;
 
@@ -84,6 +91,16 @@ const useStyles = makeStyles(theme => ({
         flexGrow: 1,
         padding: theme.spacing(3),
     },
+    avatar: {
+        margin: 10,
+        color: '#fff',
+        backgroundColor: deepPurple[500],
+        cursor: 'pointer'
+    },
+    balance: {
+        marginRight: '20px',
+        fontSize: '18px'
+    }
 }));
 
 const adminTabs = [
@@ -98,6 +115,11 @@ const adminTabs = [
         Icon: BetsListIcon
     },
     {
+        name: 'Info',
+        to: '/info',
+        Icon: InfoIcon,
+    },
+    {
         name: 'Logout',
         to: '/login',
         Icon: LogoutIcon,
@@ -106,6 +128,11 @@ const adminTabs = [
 ];
 
 const userTabs = [
+    {
+        name: 'Info',
+        to: '/info',
+        Icon: InfoIcon,
+    },
     {
         name: 'Logout',
         to: '/login',
@@ -118,6 +145,9 @@ function Layout(props) {
     const classes = useStyles();
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
+    const { role, userName, balance, ...rest } = props.auth.getProfile();
+    const tabs = getTabsByRole(role);
+
 
     function handleDrawerOpen() {
         setOpen(true);
@@ -131,13 +161,27 @@ function Layout(props) {
         if (role === 'admin') {
             return adminTabs;
         }
-        return userTabs;s
+        return userTabs;
     }
 
-    const { role } = props.auth.getProfile();
-    console.log('role', role);
-    const tabs = getTabsByRole(role);
+    const greeting = (userName) => {
+        const d = new Date();
+        const hours = d.getHours();
 
+        if (hours < 12 && hours > 6) {
+            return `Good morning ${userName}`;
+        } else if (hours >= 12) {
+            return `Good afternoon ${userName}`;
+        } else if (hours > 18) {
+            return `Good evening ${userName}`;
+        } else if (hours > 21) {
+            return `Good evening ${userName}`;
+        } else {
+            return `Hi ${userName}`
+        }
+    };
+
+    console.log('rest', rest);
     return (
         <div className={classes.root}>
             <CssBaseline />
@@ -147,21 +191,43 @@ function Layout(props) {
                     [classes.appBarShift]: open,
                 })}
             >
-                <Toolbar>
-                    <IconButton
-                        color="inherit"
-                        aria-label="open drawer"
-                        onClick={handleDrawerOpen}
-                        edge="start"
-                        className={clsx(classes.menuButton, {
-                            [classes.hide]: open,
-                        })}
-                    >
-                        <MenuIcon />
-                    </IconButton>
-                    <Typography variant="h6" noWrap>
-                        Back office
-                    </Typography>
+                <Toolbar className="flex justify-between">
+                    <div className="flex align-center">
+                        <IconButton
+                            color="inherit"
+                            aria-label="open drawer"
+                            onClick={handleDrawerOpen}
+                            edge="start"
+                            className={clsx(classes.menuButton, {
+                                [classes.hide]: open,
+                            })}
+                        >
+                            <MenuIcon />
+                        </IconButton>
+                        <Typography variant="h6" noWrap>
+                            {greeting(userName)}
+                        </Typography>
+                    </div>
+                    <div className="flex align-center justify-center">
+                        <p className={classes.balance}><span className="bold">Current balance:</span> {`${balance} ₽`}</p>
+                        <Select
+                            className="locale-switcher"
+                            value={i18n.language}
+                            onChange={(e) => {
+                                i18n.changeLanguage(e.target.value);
+                            }}
+                        >
+                            <MenuItem value='en'>English</MenuItem>
+                            <MenuItem value='ru'>Russian</MenuItem>
+                        </Select>
+                        <Avatar
+                            alt="Remy Sharp"
+                            className={classes.avatar}
+                            onClick={() => Router.push('/profile')}
+                        >
+                            PG
+                        </Avatar>
+                    </div>
                 </Toolbar>
             </AppBar>
             <Drawer

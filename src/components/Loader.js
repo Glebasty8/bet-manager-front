@@ -1,19 +1,25 @@
 import React, { Fragment } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import CircularProgress from '@material-ui/core/CircularProgress';
 
-const useStyles = makeStyles(theme => ({
-    progress: {
-        margin: theme.spacing(2),
-    },
-}));
+// Ball icons
+import Tennis from '../../static/svg/tennis.svg';
+import Baseball from '../../static/svg/baseball.svg';
+import Basketball from '../../static/svg/basketball.svg';
+import Football from '../../static/svg/football.svg';
+import Volleyball from '../../static/svg/volleyball.svg';
+import Rugby from '../../static/svg/rugby.svg';
 
 export default function CircularIndeterminate() {
-    const classes = useStyles();
+
+    const randomIndex = Math.floor(Math.random() * 7);
+    const loaders = [Tennis, Baseball, Basketball, Football, Volleyball, Rugby];
 
     return (
         <Fragment>
-            <CircularProgress className={classes.progress} color="primary" />
+            <img
+                className="loader"
+                src={loaders[randomIndex]}
+                alt="Ball Loader"
+            />
         </Fragment>
     );
 }

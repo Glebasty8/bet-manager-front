@@ -21,7 +21,12 @@ const styles = () => {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            flexDirection: 'column'
+            flexDirection: 'column',
+            // background: 'url(../static/img/1.jpg) no-repeat center center fixed',
+            // '-webkit-background-size': 'cover',
+            // '-moz-background-size': 'cover',
+            // '-o-background-size': 'cover',
+            // 'background-size': 'cover',
         },
         textField: {
             marginLeft: theme.spacing(1),
@@ -51,7 +56,7 @@ class Login extends Component {
                 <Formik
                     initialValues={{
                         email: '',
-                        password: ''
+                        password: '',
                     }}
                     validationSchema={() => yup.object().shape({
                         email: yup
@@ -63,11 +68,12 @@ class Login extends Component {
                             .min(5, 'Minimum password length should be 5 symbols')
                             .required('Password is required!'),
                     })}
-                    onSubmit={async (values, { setSubmitting }) => {
-                        const profile = await auth.login(values);
-                        console.log('profile', profile);
-                        if (profile) {
+                    onSubmit={async (values, { setSubmitting, setStatus }) => {
+                        const res = await auth.login(values);
+                        if (res.ok) {
                             Router.push('/');
+                        } else {
+                            setStatus(res.message)
                         }
                         setSubmitting(false);
                     }}
@@ -80,10 +86,13 @@ class Login extends Component {
                         handleBlur,
                         errors,
                         touched,
+                        status,
+                        setStatus
                       }) => {
                         return (
                             <form autoComplete="off" onSubmit={handleSubmit}>
                                 <FormControl>
+                                    <span className="error centred">{status}</span>
                                     <TextField
                                         autoComplete="off"
                                         name="email"
@@ -91,7 +100,10 @@ class Login extends Component {
                                         className={classes.textField}
                                         margin="normal"
                                         value={values.email}
-                                        onChange={handleChange}
+                                        onChange={(e) => {
+                                            setStatus('');
+                                            handleChange(e)
+                                        }}
                                         error={!!touched.email && !!errors.email}
                                         helperText={touched.email && errors.email ? errors.email : ''}
                                         onBlur={handleBlur}
@@ -104,7 +116,10 @@ class Login extends Component {
                                         className={classes.textField}
                                         margin="normal"
                                         value={values.password}
-                                        onChange={handleChange}
+                                        onChange={(e) => {
+                                            setStatus('');
+                                            handleChange(e)
+                                        }}
                                         error={!!touched.password && !!errors.password}
                                         helperText={touched.password && errors.password ? errors.password : ''}
                                         onBlur={handleBlur}

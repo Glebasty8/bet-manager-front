@@ -59,10 +59,25 @@ const login = (creeds) => {
 };
 
 const register = (data) => {
-  console.log('data', data);
   return fetch(`${api}/auth/register`, {
     method: 'POST',
     body: JSON.stringify(data),
+    headers
+  })
+};
+
+const newPassword = (values) => {
+  return fetch(`${api}/auth/new-password`, {
+    method: 'POST',
+    body: JSON.stringify(values),
+    headers
+  })
+};
+
+const forgotPassword = (values) => {
+  return fetch(`${api}/auth/forgot-password`, {
+    method: 'POST',
+    body:  JSON.stringify(values),
     headers
   })
 };
@@ -74,6 +89,14 @@ const getProfile = (token) => {
       ...headers,
       'Authorization': `Bearer ${token}`
     },
+  })
+};
+
+const profileUpdate = (values) => {
+  return fetch(`${api}/auth`, {
+    method: 'PUT',
+    body: JSON.stringify(values),
+    headers
   })
 };
 
@@ -92,5 +115,8 @@ export default {
   // Auth
   login,
   register,
-  getProfile
+  getProfile,
+  forgotPassword,
+  newPassword,
+  profileUpdate
 }

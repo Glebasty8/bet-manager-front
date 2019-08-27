@@ -4,12 +4,18 @@ class AuthService {
     login = async (creeds) => {
         // Get a token
         const res = await api.login(creeds);
+        if (!res.ok && res.status === 400) {
+            return res.json()
+        }
         const token = await res.text();
         this.setToken(token);
-        const profile = await api.getProfile(this.getToken());
-        const profileinJSON = await profile.json();
-        this.setProfile(profileinJSON);
-        return profileinJSON
+        const profileRes = await api.getProfile(this.getToken());
+        const profile = await profileRes.json();
+        if (!profileRes.ok && profileRes.status === 400) {
+            return await res.json()
+        }
+        this.setProfile(profile);
+        return profileRes;
     };
 
     register = async (data) => {
