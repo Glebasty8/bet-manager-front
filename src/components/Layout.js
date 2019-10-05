@@ -181,7 +181,6 @@ function Layout(props) {
         }
     };
 
-    console.log('rest', rest);
     return (
         <div className={classes.root}>
             <CssBaseline />

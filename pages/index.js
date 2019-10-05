@@ -1,4 +1,5 @@
 import React, { PureComponent, Fragment } from 'react';
+import moment from 'moment';
 import compose from 'recompose/compose';
 import Router from 'next/router';
 import { withStyles } from '@material-ui/styles';
@@ -180,12 +181,13 @@ class Bets extends PureComponent {
     render() {
         const { classes } = this.props;
         const { isInfoModalOpened } = this.state;
-        const { subscriptionId } = this.props.auth.getProfile();
-        console.log('profile', this.props.auth.getProfile());
+        const { subscription = {} } = this.props.auth.getProfile();
+        const { id: subscriptionId, completionDate } = subscription;
+        const isSubscriptionExpired = moment().diff(completionDate) < 0;
         return (
             <main className={classes.content}>
                 <div className={classes.toolbar} />
-                {subscriptionId ? this.renderAvailableBets() : this.renderSubscriptionOptions()}
+                {subscriptionId && !isSubscriptionExpired ? this.renderAvailableBets() : this.renderSubscriptionOptions()}
                 <Modal
                     open={isInfoModalOpened}
                     onClose={this.closeInfoModal}
