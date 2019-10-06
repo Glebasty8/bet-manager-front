@@ -1,7 +1,5 @@
 import fetch from 'isomorphic-unfetch';
 
-console.log('process.env', process.env.NODE_ENV);
-
 const isProduction = process.env.NODE_ENV !== 'development';
 
 const api = isProduction ? 'https://bet-man-app2.herokuapp.com/api' : 'http://localhost:5000/api';
