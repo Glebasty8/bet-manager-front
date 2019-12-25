@@ -29,9 +29,6 @@ const styles = () => {
         },
         button: {
             margin: theme.spacing(1),
-        },
-        icon: {
-            width: '350px'
         }
     }
 };
@@ -51,7 +48,7 @@ class ForgotPassword extends Component {
                     Forgot Password?
                 </Typography>
                 <img
-                    className={classes.icon}
+                    className="sports-men-icon"
                     src={ArbitroIcon}
                     alt="Arbitrator"
                 />
@@ -91,7 +88,7 @@ class ForgotPassword extends Component {
                         return (
                             <form autoComplete="off" onSubmit={handleSubmit}>
                                 <Typography variant="subtitle1" gutterBottom align="center">
-                                    We’ll email you a link to reset your password
+                                    We’ll send you a link to reset your password
                                 </Typography>
                                 <FormControl>
                                     <span className="error centred">{status}</span>

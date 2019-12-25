@@ -12,7 +12,7 @@ import Button from '@material-ui/core/Button';
 import theme from 'src/theme';
 import AuthService from 'src/utils/AuthService';
 
-const auth = new AuthService()
+const auth = new AuthService();
 
 const styles = () => {
     return {
@@ -51,6 +51,7 @@ class Signup extends Component {
                     validationSchema={() => yup.object().shape({
                         userName: yup
                             .string()
+                            .min(5, 'Minimum username length should be 5 symbols')
                             .required('First name is required'),
                         email: yup
                             .string()
@@ -65,7 +66,7 @@ class Signup extends Component {
                         const res = await auth.register(values);
                         console.log('res', res);
                         if (res) {
-                            Router.push('/users')
+                            Router.push('/')
                         }
                         setSubmitting(false);
                     }}

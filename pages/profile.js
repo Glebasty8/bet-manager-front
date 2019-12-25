@@ -63,9 +63,6 @@ class Profile extends Component {
                 <Typography variant="h3" gutterBottom>
                     Edit Profile
                 </Typography>
-                {/*<Avatar className={classes.profileAvatar}>*/}
-                    {/*GS*/}
-                {/*</Avatar>*/}
                 <Formik
                     initialValues={{
                         ...profile,
@@ -84,7 +81,7 @@ class Profile extends Component {
                             .positive('Bank should be positive')
                     })}
                     onSubmit={async (values, { setSubmitting }) => {
-                        const res = await api.profileUpdate(values);
+                        const res = await api.updateUser(profile.id ,values);
                         console.log('res', res);
                         setSubmitting(false);
                     }}
@@ -113,6 +110,7 @@ class Profile extends Component {
                                         error={!!touched.userName && !!errors.userName}
                                         helperText={touched.userName && errors.userName ? errors.userName : ''}
                                         onBlur={handleBlur}
+                                        disabled
                                     />
                                     <TextField
                                         autoComplete="off"
@@ -125,6 +123,7 @@ class Profile extends Component {
                                         error={!!touched.email && !!errors.email}
                                         helperText={touched.email && errors.email ? errors.email : ''}
                                         onBlur={handleBlur}
+                                        disabled
                                     />
                                     <TextField
                                         autoComplete="off"

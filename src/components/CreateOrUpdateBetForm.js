@@ -193,7 +193,7 @@ const CreateOrUpdateBetForm = ({ initialValues, onSubmit }) => {
                             />
                             <DateTimePicker
                                 className={classes.textField}
-                                format="YYYY/MM/DD HH:MM"
+                                format="YYYY/MM/DD h:mm a"
                                 name="eventDate"
                                 margin="normal"
                                 label="Event Date"

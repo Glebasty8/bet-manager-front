@@ -2,11 +2,12 @@ import fetch from 'isomorphic-unfetch';
 
 const isProduction = process.env.NODE_ENV !== 'development';
 
-const api = isProduction ? 'https://bet-man-app2.herokuapp.com/api' : 'http://localhost:5000/api';
+const api = isProduction ? 'https://bet-man-app2.herokuapp.com/api' : process.env.BASE_API;
 
 const headers = {
   'Content-Type': 'application/json',
   'Accept': 'application/json',
+  // 'Authorization': `Bearer ${localStorage.getItem('token')}`
 };
 // Bets endpoints
 
@@ -50,6 +51,14 @@ const deleteUser = (userId) => {
     method: 'DELETE'
   })
 };
+
+const updateUser = (userId, values) => {
+  return fetch(`${api}/users/${userId}`, {
+    method: 'PUT',
+    body: JSON.stringify(values)
+  })
+};
+
 
 // Auth endpoints
 const login = (creeds) => {
@@ -113,6 +122,7 @@ export default {
   // Users
   getUsers,
   deleteUser,
+  updateUser,
 
   // Auth
   login,

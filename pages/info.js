@@ -22,12 +22,12 @@ const styles = {
 
 class Info extends PureComponent {
     render() {
-        const { classes } = this.props;
+        const { classes, t } = this.props;
         return (
             <main className={classes.content}>
                 <div className={classes.toolbar} />
                 <Typography variant="h1" paragraph>
-                    Info
+                    {t('h1')}
                 </Typography>
             </main>
         );

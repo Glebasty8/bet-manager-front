@@ -52,7 +52,6 @@ class Users extends Component {
 
     render() {
         const { classes, users = [], t } = this.props;
-        console.log('this.props', this.props);
 
         return (
             <main className={classes.content}>
@@ -67,7 +66,7 @@ class Users extends Component {
                                 <TableCell>#</TableCell>
                                 <TableCell>Name</TableCell>
                                 <TableCell align="left">Email</TableCell>
-                                <TableCell align="left">Country</TableCell>
+                                {/*<TableCell align="left">Country</TableCell>*/}
                                 <TableCell align="left">Role</TableCell>
                                 <TableCell align="left">Created At</TableCell>
                                 <TableCell align="left" />
@@ -81,7 +80,7 @@ class Users extends Component {
                                         {userName}
                                     </TableCell>
                                     <TableCell align="left">{email}</TableCell>
-                                    <TableCell align="left">{country}</TableCell>
+                                   {/* <TableCell align="left">{country}</TableCell>*/}
                                     <TableCell align="left">{role}</TableCell>
                                     <TableCell align="left">
                                         {moment(createAt).format('DD-MM-YYYY')}

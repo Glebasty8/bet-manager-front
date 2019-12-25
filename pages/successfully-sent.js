@@ -23,9 +23,6 @@ const styles = () => {
         },
         button: {
             margin: theme.spacing(1),
-        },
-        icon: {
-            width: '350px'
         }
     }
 };
@@ -45,13 +42,12 @@ class SuccessfullySent extends Component {
                     Password resetting
                 </Typography>
                 <img
-                    className={classes.icon}
+                    className="sports-men-icon"
                     src={FootballerIcon}
                     alt="Football players"
                 />
                 <Typography variant="subtitle1" gutterBottom align="center">
-                    Email with next steps successfully sent to your email address
-
+                    The letter with next steps has already being sent to your email. Check it to finish.
                 </Typography>
                 <Button
                     variant="contained"

@@ -66,9 +66,9 @@ const styles = {
 };
 
 const subscriptions = [
-    { title: 'Subscription for day', value: '200', description: 'Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica' },
-    { title: 'Subscription for week', value: '400', description: 'Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica' },
-    { title: ' Subscription for month', value: '1000', description: 'Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica' },
+    { title: 'Subscription for day', value: '200', description: 'Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica', data: 'eyJ2ZXJzaW9uIjozLCJhY3Rpb24iOiJwYXkiLCJwdWJsaWNfa2V5IjoiaTIxMDM2NzE2NjMzIiwiYW1vdW50IjoiMjAwIiwiY3VycmVuY3kiOiJSVUIiLCJkZXNjcmlwdGlvbiI6Ik15IGdvb2RzIiwidHlwZSI6ImJ1eSIsImxhbmd1YWdlIjoicnUifQ==', signature: 'LxGmSAGmZsL+gtcJWuroxVSL3pQ=' },
+    { title: 'Subscription for week', value: '400', description: 'Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica', data: 'eyJ2ZXJzaW9uIjozLCJhY3Rpb24iOiJwYXkiLCJwdWJsaWNfa2V5IjoiaTIxMDM2NzE2NjMzIiwiYW1vdW50IjoiNDAwIiwiY3VycmVuY3kiOiJSVUIiLCJkZXNjcmlwdGlvbiI6Ik15IGdvb2RzIiwidHlwZSI6ImJ1eSIsImxhbmd1YWdlIjoicnUifQ==', signature: 'Jyo8Y4JRWXaAPXk+AeyOBsAcKcw=' },
+    { title: ' Subscription for month', value: '1000', description: 'Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica', data: 'eyJ2ZXJzaW9uIjozLCJhY3Rpb24iOiJwYXkiLCJwdWJsaWNfa2V5IjoiaTIxMDM2NzE2NjMzIiwiYW1vdW50IjoiNDAwIiwiY3VycmVuY3kiOiJSVUIiLCJkZXNjcmlwdGlvbiI6Ik15IGdvb2RzIiwidHlwZSI6ImJ1eSIsImxhbmd1YWdlIjoicnUifQ==', signature: 'uJf+uHQuz2E3OEsIuQ7DmKkVMi8=' },
 ];
 
 class Bets extends PureComponent {
@@ -162,15 +162,21 @@ class Bets extends PureComponent {
                            <Typography variant="body2" color="textSecondary" component="p" align="center">
                               {description}
                            </Typography>
-                           <Button
-                               type="button"
-                               variant="contained"
-                               color="primary"
-                               className={classes.button}
-                               onClick={() => this.onSubscribe(value)}
-                           >
-                               {`Subscribe (${value}₽)`}
-                           </Button>
+                           <form method="POST" acceptCharset="utf-8" action="https://www.liqpay.ua/api/3/checkout">
+                               <input type="hidden" name="data"
+                                      value="eyJ2ZXJzaW9uIjozLCJhY3Rpb24iOiJwYXkiLCJwdWJsaWNfa2V5Ijoic2FuZGJveF9pNjYzOTE1OTY4NDUiLCJhbW91bnQiOiI1IiwiY3VycmVuY3kiOiJVQUgiLCJkZXNjcmlwdGlvbiI6Ik15IGdvb2RzIiwidHlwZSI6ImJ1eSIsImxhbmd1YWdlIjoicnUifQ=="/>
+                               <input type="hidden" name="signature" value="2ovZd2qjlwb7zPcSkqklLV9AAe8="/>
+                               <Button
+                                   type="submit"
+                                   variant="contained"
+                                   color="primary"
+                                   className={classes.button}
+                               >
+                                   <img src="https://static.liqpay.ua/buttons/logo-small.png" alt="arrow" name="btn_text"
+                                        style={{ marginRight: '7px', verticalAlign: 'middle'}}/>
+                                   <span style={{ verticalAlign: 'middle'}}>{`Subscribe (${value}₽)`}</span>
+                               </Button>
+                           </form>
                        </Card>
                    )
                })}
@@ -182,12 +188,12 @@ class Bets extends PureComponent {
         const { classes } = this.props;
         const { isInfoModalOpened } = this.state;
         const { subscription = {} } = this.props.auth.getProfile();
-        const { id: subscriptionId, completionDate } = subscription;
+        const { id: subscriptionId = null, completionDate } = subscription || {};
         const isSubscriptionExpired = moment().diff(completionDate) < 0;
         return (
             <main className={classes.content}>
                 <div className={classes.toolbar} />
-                {subscriptionId && !isSubscriptionExpired ? this.renderAvailableBets() : this.renderSubscriptionOptions()}
+                {!subscriptionId && isSubscriptionExpired ? this.renderAvailableBets() : this.renderSubscriptionOptions()}
                 <Modal
                     open={isInfoModalOpened}
                     onClose={this.closeInfoModal}

@@ -96,10 +96,6 @@ const useStyles = makeStyles(theme => ({
         color: '#fff',
         backgroundColor: deepPurple[500],
         cursor: 'pointer'
-    },
-    balance: {
-        marginRight: '20px',
-        fontSize: '18px'
     }
 }));
 
@@ -145,7 +141,7 @@ function Layout(props) {
     const classes = useStyles();
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
-    const { role, userName, balance, ...rest } = props.auth.getProfile();
+    const { role, userName = '', balance, ...rest } = props.auth.getProfile();
     const tabs = getTabsByRole(role);
 
 
@@ -169,13 +165,13 @@ function Layout(props) {
         const hours = d.getHours();
 
         if (hours < 12 && hours > 6) {
-            return `Good morning ${userName}`;
+            return `Good morning, ${userName}`;
         } else if (hours >= 12) {
-            return `Good afternoon ${userName}`;
+            return `Good afternoon, ${userName}`;
         } else if (hours > 18) {
-            return `Good evening ${userName}`;
+            return `Good evening, ${userName}`;
         } else if (hours > 21) {
-            return `Good evening ${userName}`;
+            return `Good evening, ${userName}`;
         } else {
             return `Hi ${userName}`
         }
@@ -208,7 +204,6 @@ function Layout(props) {
                         </Typography>
                     </div>
                     <div className="flex align-center justify-center">
-                        <p className={classes.balance}><span className="bold">Current balance:</span> {`${balance} ₽`}</p>
                         <Select
                             className="locale-switcher"
                             value={i18n.language}
@@ -224,7 +219,7 @@ function Layout(props) {
                             className={classes.avatar}
                             onClick={() => Router.push('/profile')}
                         >
-                            PG
+                            {userName.slice(0, 1)}
                         </Avatar>
                     </div>
                 </Toolbar>

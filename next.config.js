@@ -17,6 +17,10 @@ module.exports = withPlugins(
             config.resolve.alias['components'] = path.join(__dirname, 'src/components');
             config.resolve.alias['src'] = path.join(__dirname, 'src/');
             return config
+        },
+        env: {
+            // Will be available on both server and client
+            BASE_API: process.env.BASE_API
         }
     },
     {

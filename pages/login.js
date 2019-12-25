@@ -35,6 +35,9 @@ const styles = () => {
         },
         button: {
             margin: theme.spacing(1),
+        },
+        forgotPassword: {
+            marginRight: '8px'
         }
     }
 };
@@ -125,8 +128,8 @@ class Login extends Component {
                                         onBlur={handleBlur}
                                     />
                                     <Typography align="right">
-                                        <Link href="/forgot-password">
-                                            <span className="link">Forgot password?</span>
+                                        <Link href="/forgot-password" className={classes.forgotPassword}>
+                                            <span className={`link ${classes.forgotPassword}`}>Forgot password?</span>
                                         </Link>
                                     </Typography>
                                     <Button

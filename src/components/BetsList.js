@@ -48,16 +48,16 @@ const BetsList = ({ bets, onBetDelete }) => {
                 <TableHead>
                     <TableRow>
                         <TableCell>#</TableCell>
-                        <TableCell>Competitors</TableCell>
+                        <TableCell align="left">Event Date</TableCell>
                         <TableCell>Sport</TableCell>
                         <TableCell align="left">Competition</TableCell>
+                        <TableCell>Competitors</TableCell>
                         <TableCell align="left">Forecast</TableCell>
-                        <TableCell align="left">Bet Amount</TableCell>
                         <TableCell align="left">Coefficient</TableCell>
+                        <TableCell align="left">Bet Amount</TableCell>
+                        <TableCell align="left">Status</TableCell>
                         <TableCell align="left">Profit</TableCell>
                         <TableCell align="left">Free</TableCell>
-                        <TableCell align="left">Status</TableCell>
-                        <TableCell align="left">Event Date</TableCell>
                         {onBetDelete && <TableCell align="left" />}
                         {onBetDelete && <TableCell align="left" />}
                     </TableRow>
@@ -66,16 +66,15 @@ const BetsList = ({ bets, onBetDelete }) => {
                     {bets.map(({ id, sportType, competition, forecast, betAmount, coefficient, isFree, eventDate, competitors = [], status }) => (
                         <TableRow key={id}>
                             <TableCell align="left">{id}</TableCell>
-                            <TableCell align="left">{renderCompetitors(competitors)}</TableCell>
+                            <TableCell align="left">{moment(eventDate).format('DD-MM-YYYY HH:MM')}</TableCell>
                             <TableCell component="th" scope="row">
                                 {sportType}
                             </TableCell>
                             <TableCell align="left">{competition}</TableCell>
+                            <TableCell align="left">{renderCompetitors(competitors)}</TableCell>
                             <TableCell align="left">{forecast}</TableCell>
-                            <TableCell align="left">{betAmount}</TableCell>
                             <TableCell align="left">{coefficient}</TableCell>
-                            <TableCell align="left">{(betAmount * coefficient) - betAmount}</TableCell>
-                            <TableCell align="left">{isFree ? 'Yes' : 'No'}</TableCell>
+                            <TableCell align="left">{betAmount}</TableCell>
                             <TableCell
                                 align="left"
                                 className={cn({
@@ -84,8 +83,11 @@ const BetsList = ({ bets, onBetDelete }) => {
                                     'failed': status === 3
                                 })}
                             >
-                                {renderStatus(status)}</TableCell>
-                            <TableCell align="left">{moment(eventDate).format('DD-MM-YYYY HH:MM')}</TableCell>
+                                {renderStatus(status)}
+                            </TableCell>
+                            <TableCell align="left">{(betAmount * coefficient) - betAmount}</TableCell>
+                            <TableCell align="left">{isFree ? 'Yes' : 'No'}</TableCell>
+
                             {onBetDelete ? <Fragment>
                                     <TableCell align="left">
                                         <Link href={`/bet/[betId]`} as={`/bet/${id}`}>
