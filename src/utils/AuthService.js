@@ -46,6 +46,11 @@ class AuthService {
         return profile ? JSON.parse(localStorage.profile) : {}
     };
 
+    getUser = async () => {
+        const profile = await api.getProfile(this.getToken());
+        return profile.json();
+    };
+
     setToken(token){
         // Saves user token to localStorage
         localStorage.setItem('token', token)

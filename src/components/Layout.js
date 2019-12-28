@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import Router from 'next/router';
 import clsx from 'clsx';
@@ -115,12 +115,6 @@ const adminTabs = [
         to: '/info',
         Icon: InfoIcon,
     },
-    {
-        name: 'Logout',
-        to: '/login',
-        Icon: LogoutIcon,
-        onClick: AuthService.logout
-    }
 ];
 
 const userTabs = [
@@ -129,19 +123,13 @@ const userTabs = [
         to: '/info',
         Icon: InfoIcon,
     },
-    {
-        name: 'Logout',
-        to: '/login',
-        Icon: LogoutIcon,
-        onClick: AuthService.logout
-    }
 ];
 
 function Layout(props) {
     const classes = useStyles();
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
-    const { role, userName = '', balance, ...rest } = props.auth.getProfile();
+    const { role, userName = '' } = props.auth.getProfile();
     const tabs = getTabsByRole(role);
 
 
@@ -244,22 +232,34 @@ function Layout(props) {
                     </IconButton>
                 </div>
                 <Divider />
-                <List>
-                    {tabs.map(({ name, Icon, to, onClick = () => {} })  => {
-                        return (
-                            <Link href={to} key={name}>
-                                <ListItem button onClick={onClick}>
-                                    <ListItemIcon>
-                                        <Icon />
-                                    </ListItemIcon>
-                                    <ListItemText primary={name} />
-                                </ListItem>
-                            </Link>
-                        )
-                    })}
+                <List className="full">
+                    <div className="flex full column justify-between">
+                        <div className="flex column top-nav">
+                            {tabs.map(({ name, Icon, to, onClick = () => {} })  => {
+                                return (
+                                    <Link href={to} key={name}>
+                                        <ListItem button onClick={onClick}>
+                                            <ListItemIcon>
+                                                <Icon />
+                                            </ListItemIcon>
+                                            <ListItemText primary={name} />
+                                        </ListItem>
+                                    </Link>
+                                )
+                            })}
+                        </div>
+                        <Link href="/login" key="Logout">
+                            <ListItem button onClick={AuthService.logout}>
+                                <ListItemIcon>
+                                    <LogoutIcon />
+                                </ListItemIcon>
+                                <ListItemText primary="Logout" />
+                            </ListItem>
+                        </Link>
+                    </div>
                 </List>
             </Drawer>
-            {props.children}
+            {React.cloneElement(props.children, { user: props.user })}
         </div>
     );
 }

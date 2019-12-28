@@ -13,7 +13,7 @@ import AuthService from 'src/utils/AuthService';
 
 const auth = new AuthService();
 
-import { appWithTranslation, i18n } from 'src/utils/i18n';
+import { appWithTranslation } from 'src/utils/i18n';
 import '../style.scss';
 
 class MyApp extends App {

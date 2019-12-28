@@ -22,11 +22,7 @@ const styles = () => {
             alignItems: 'center',
             justifyContent: 'center',
             flexDirection: 'column',
-            // background: 'url(../static/img/1.jpg) no-repeat center center fixed',
-            // '-webkit-background-size': 'cover',
-            // '-moz-background-size': 'cover',
-            // '-o-background-size': 'cover',
-            // 'background-size': 'cover',
+            background: 'url(../static/img/better.svg) no-repeat center center fixed',
         },
         textField: {
             marginLeft: theme.spacing(1),

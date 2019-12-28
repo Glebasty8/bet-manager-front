@@ -81,21 +81,24 @@ class Profile extends Component {
                             .positive('Bank should be positive')
                     })}
                     onSubmit={async (values, { setSubmitting }) => {
-                        const res = await api.updateUser(profile.id ,values);
-                        console.log('res', res);
+                        const res = await api.updateUser(profile.id, values);
+                        const updatedProfile = await res.json();
+                        auth.setProfile(updatedProfile);
                         setSubmitting(false);
                     }}
                 >
                     {({
                           handleSubmit,
+                          dirty,
                           isSubmitting,
                           values,
                           handleChange,
                           errors,
                           handleBlur,
                           touched,
-                          setFieldValue
+                          setFieldValue,
                       }) => {
+
                         return (
                             <form autoComplete="off" onSubmit={handleSubmit}>
                                 <FormControl>
@@ -158,6 +161,7 @@ class Profile extends Component {
                                         variant="contained"
                                         color="primary"
                                         className={classes.button}
+                                        disabled={isSubmitting || !dirty}
                                     >
                                         Update
                                     </Button>

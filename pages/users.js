@@ -41,6 +41,7 @@ const styles = {
 class Users extends Component {
     static async getInitialProps({ req }) {
         const res = await api.getUsers();
+        console.log('res', res);
         const users = await res.json();
         return { users };
     }

@@ -55,7 +55,8 @@ const deleteUser = (userId) => {
 const updateUser = (userId, values) => {
   return fetch(`${api}/users/${userId}`, {
     method: 'PUT',
-    body: JSON.stringify(values)
+    body: JSON.stringify(values),
+    headers
   })
 };
 

@@ -21,7 +21,8 @@ const styles = () => {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            flexDirection: 'column'
+            flexDirection: 'column',
+            background: 'url(../static/img/better.svg) no-repeat center center fixed',
         },
         textField: {
             marginLeft: theme.spacing(1),
