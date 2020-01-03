@@ -8,9 +8,13 @@ import Typography from '@material-ui/core/Typography';
 import FormControl from '@material-ui/core/FormControl';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
+import InputLabel from "@material-ui/core/InputLabel";
 
 import theme from 'src/theme';
 import AuthService from 'src/utils/AuthService';
+import countries from 'src/constants/countries';
 
 const auth = new AuthService();
 
@@ -31,6 +35,10 @@ const styles = () => {
         },
         button: {
             margin: theme.spacing(1),
+        },
+        formControl: {
+            position: 'relative',
+            maxWidth: 400
         }
     }
 };
@@ -62,6 +70,9 @@ class Signup extends Component {
                             .string()
                             .min(5, 'Minimum password length should be 5 symbols')
                             .required('Password is required!'),
+                        country: yup
+                            .number()
+                            .required('Country is required!'),
                     })}
                     onSubmit={async (values, { setSubmitting }) => {
                         const res = await auth.register(values);
@@ -96,6 +107,29 @@ class Signup extends Component {
                                         helperText={touched.userName && errors.userName ? errors.userName : ''}
                                         onBlur={handleBlur}
                                     />
+                                    <FormControl className={classes.formControl}>
+                                        <InputLabel shrink htmlFor="country">
+                                            Country
+                                        </InputLabel>
+                                        <Select
+                                            name="country"
+                                            id="country"
+                                            className={classes.textField}
+                                            value={values.countryId}
+                                            onChange={handleChange}
+                                        >
+                                            {countries.map(({ id, value }) => {
+                                                return (
+                                                    <MenuItem
+                                                        key={id}
+                                                        value={id}
+                                                    >
+                                                        {label}
+                                                    </MenuItem>
+                                                )
+                                            })}
+                                        </Select>
+                                    </FormControl>
                                     <TextField
                                         autoComplete="off"
                                         name="email"

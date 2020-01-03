@@ -7,15 +7,18 @@ import FormControl from '@material-ui/core/FormControl';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import InputAdornment from '@material-ui/core/InputAdornment';
-// import Avatar from '@material-ui/core/Avatar';
 import { deepPurple } from '@material-ui/core/colors';
 import {
     DatePicker,
 } from '@material-ui/pickers';
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
+import InputLabel from "@material-ui/core/InputLabel";
 
 import theme from 'src/theme';
 import AuthService from 'src/utils/AuthService';
 import api from 'src/api';
+import countries from 'src/constants/countries';
 
 const auth = new AuthService();
 
@@ -36,9 +39,8 @@ const styles = () => {
             padding: theme.spacing(3),
         },
         textField: {
-            marginLeft: theme.spacing(1),
-            marginRight: theme.spacing(1),
             width: 400,
+            margin: theme.spacing(1),
         },
         button: {
             margin: theme.spacing(1),
@@ -49,6 +51,9 @@ const styles = () => {
             fontSize: '60px',
             cursor: 'pointer',
             backgroundColor: deepPurple[500],
+        },
+        selectLabel: {
+            paddingLeft: '10px'
         }
     }
 };
@@ -100,7 +105,10 @@ class Profile extends Component {
                       }) => {
 
                         return (
-                            <form autoComplete="off" onSubmit={handleSubmit}>
+                            <form
+                                autoComplete="off"
+                                onSubmit={handleSubmit}
+                            >
                                 <FormControl>
                                     <TextField
                                         autoComplete="off"
@@ -128,6 +136,29 @@ class Profile extends Component {
                                         onBlur={handleBlur}
                                         disabled
                                     />
+                                    <FormControl>
+                                        <InputLabel shrink htmlFor="countryId" className={classes.selectLabel}>
+                                            Country
+                                        </InputLabel>
+                                        <Select
+                                            name="countryId"
+                                            id="countryId"
+                                            className={classes.textField}
+                                            value={values.countryId}
+                                            onChange={handleChange}
+                                        >
+                                            {countries.map(({ id, label }) => {
+                                                return (
+                                                    <MenuItem
+                                                        key={id}
+                                                        value={id}
+                                                    >
+                                                        {label}
+                                                    </MenuItem>
+                                                )
+                                            })}
+                                        </Select>
+                                    </FormControl>
                                     <TextField
                                         autoComplete="off"
                                         type="number"

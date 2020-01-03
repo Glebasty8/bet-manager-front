@@ -2,6 +2,7 @@ import React, { Fragment } from 'react';
 import cn from "classnames";
 import { makeStyles, createStyles } from '@material-ui/styles';
 import moment from 'moment';
+
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -40,7 +41,7 @@ const renderCompetitors = (competitors = []) => {
     return '';
 };
 
-const BetsList = ({ bets, onBetDelete }) => {
+const BetsList = ({ bets, onBetDelete, sportTypes }) => {
     const classes = useStyles();
     return (
         <Paper className={classes.root}>
@@ -63,47 +64,50 @@ const BetsList = ({ bets, onBetDelete }) => {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {bets.map(({ id, sportType, competition, forecast, betAmount, coefficient, isFree, eventDate, competitors = [], status }) => (
-                        <TableRow key={id}>
-                            <TableCell align="left">{id}</TableCell>
-                            <TableCell align="left">{moment(eventDate).format('DD-MM-YYYY HH:MM')}</TableCell>
-                            <TableCell component="th" scope="row">
-                                {sportType}
-                            </TableCell>
-                            <TableCell align="left">{competition}</TableCell>
-                            <TableCell align="left">{renderCompetitors(competitors)}</TableCell>
-                            <TableCell align="left">{forecast}</TableCell>
-                            <TableCell align="left">{coefficient}</TableCell>
-                            <TableCell align="left">{betAmount}</TableCell>
-                            <TableCell
-                                align="left"
-                                className={cn({
-                                    'pending': status === 1,
-                                    'succeeded': status === 2,
-                                    'failed': status === 3
-                                })}
-                            >
-                                {renderStatus(status)}
-                            </TableCell>
-                            <TableCell align="left">{(betAmount * coefficient) - betAmount}</TableCell>
-                            <TableCell align="left">{isFree ? 'Yes' : 'No'}</TableCell>
+                    {bets.map(({ id, sportTypeId, competition, forecast, betAmount, coefficient, isFree, eventDate, competitors = [], status }) => {
 
-                            {onBetDelete ? <Fragment>
-                                    <TableCell align="left">
-                                        <Link href={`/bet/[betId]`} as={`/bet/${id}`}>
-                                            <EditIcon className="icon" />
-                                        </Link>
-                                    </TableCell>
-                                    <TableCell align="left">
-                                        <DeleteIcon
-                                            onClick={() => this.onDeleteBet(id)}
-                                            className="icon"
-                                        />
-                                    </TableCell>
-                                </Fragment>
-                                : null}
-                        </TableRow>
-                    ))}
+                        const sportType = sportTypes.find(sportType => sportType.id === sportTypeId);
+                        return (
+                            <TableRow key={id}>
+                                <TableCell align="left">{id}</TableCell>
+                                <TableCell align="left">{moment(eventDate).format('DD-MM-YYYY HH:MM')}</TableCell>
+                                <TableCell component="th" scope="row">
+                                    {sportType ? sportType.name : ''}
+                                </TableCell>
+                                <TableCell align="left">{competition}</TableCell>
+                                <TableCell align="left">{renderCompetitors(competitors)}</TableCell>
+                                <TableCell align="left">{forecast}</TableCell>
+                                <TableCell align="left">{coefficient}</TableCell>
+                                <TableCell align="left">{betAmount}</TableCell>
+                                <TableCell
+                                    align="left"
+                                    className={cn({
+                                        'pending': status === 1,
+                                        'succeeded': status === 2,
+                                        'failed': status === 3
+                                    })}
+                                >
+                                    {renderStatus(status)}
+                                </TableCell>
+                                <TableCell align="left">{(betAmount * coefficient) - betAmount}</TableCell>
+                                <TableCell align="left">{isFree ? 'Yes' : 'No'}</TableCell>
+
+                                {onBetDelete ? <Fragment>
+                                        <TableCell align="left">
+                                            <Link href={`/bet/[betId]`} as={`/bet/${id}`}>
+                                                <EditIcon className="icon" />
+                                            </Link>
+                                        </TableCell>
+                                        <TableCell align="left">
+                                            <DeleteIcon
+                                                onClick={() => this.onDeleteBet(id)}
+                                                className="icon"
+                                            />
+                                        </TableCell>
+                                    </Fragment>
+                                    : null}
+                            </TableRow>
+                        )})}
                 </TableBody>
             </Table>
         </Paper>

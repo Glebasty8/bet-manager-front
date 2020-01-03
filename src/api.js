@@ -112,6 +112,14 @@ const profileUpdate = (values) => {
   })
 };
 
+// Sport types endpoints
+const getSportTypes = () => {
+  return fetch(`${api}/sport-types`, {
+    method: 'GET',
+        headers
+  })
+};
+
 export default {
   // Bets
   getBets,
@@ -131,5 +139,8 @@ export default {
   getProfile,
   forgotPassword,
   newPassword,
-  profileUpdate
+  profileUpdate,
+
+  // Sport types
+  getSportTypes,
 }

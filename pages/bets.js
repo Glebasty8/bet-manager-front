@@ -27,10 +27,10 @@ const styles = {
 
 class Bets extends PureComponent {
     static async getInitialProps() {
-        const res = await api.getBets();
-        const bets = await res.json();
+        const [resBets, resSportTypes] = await Promise.all([api.getBets(), api.getSportTypes()])
+        const [bets, sportTypes] = await Promise.all([resBets.json(), resSportTypes.json()]);
 
-        return { bets, namespacesRequired: ['bets'] };
+        return { bets, sportTypes, namespacesRequired: ['bets'] };
     }
 
     onBetDelete = async (betId) => {
@@ -39,7 +39,9 @@ class Bets extends PureComponent {
     };
 
     render() {
-        const { classes, bets, t } = this.props;
+        const { classes, bets, sportTypes, t } = this.props;
+        console.log('bets', bets);
+        console.log('sportTypes', sportTypes);
         return (
             <main className={classes.content}>
                 <div className={classes.toolbar} />
@@ -49,6 +51,7 @@ class Bets extends PureComponent {
                 <BetsList
                     bets={bets}
                     onBetDelete={this.onBetDelete}
+                    sportTypes={sportTypes}
                 />
                 <div className="flex justify-end">
                     <Link href="/create-bet">

@@ -21,18 +21,19 @@ const styles = {
     },
 };
 
-class Bets extends Component {
+class CreateBet extends Component {
     static async getInitialProps() {
-        const res = await api.getBets();
-        const bets = await res.json();
-        return { bets };
+        const res = await api.getSportTypes();
+        const sportTypes = await res.json();
+        return { sportTypes };
     }
 
     createBet = async (values, { setSubmitting }) => {
         const { id } = this.props.auth.getProfile();
         const payload = {
             userId: id,
-            ...values
+            ...values,
+            sportTypeId: values.sportType
         };
 
         const res = await api.createBet(payload);
@@ -44,8 +45,9 @@ class Bets extends Component {
     };
 
     render() {
-        const { classes } = this.props;
+        const { classes, sportTypes } = this.props;
 
+        console.log('sportTypes', sportTypes);
         return (
             <main className={classes.content}>
                 <div className={classes.toolbar} />
@@ -54,10 +56,13 @@ class Bets extends Component {
                 </Typography>
                 <CreateOrUpdateBetForm
                     onSubmit={this.createBet}
+                    data={{
+                        sportTypes
+                    }}
                 />
             </main>
         );
     }
 }
 
-export default withStyles(styles)(Bets);
+export default withStyles(styles)(CreateBet);

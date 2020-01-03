@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => createStyles({
     }
 }));
 
-const CreateOrUpdateBetForm = ({ initialValues, onSubmit }) => {
+const CreateOrUpdateBetForm = ({ initialValues, onSubmit, data }) => {
     const classes = useStyles();
     return (
         <Formik
@@ -129,18 +129,29 @@ const CreateOrUpdateBetForm = ({ initialValues, onSubmit }) => {
                                     )}
                                 }
                             />
-                            <TextField
-                                autoComplete="off"
-                                name="sportType"
-                                label="Sport"
-                                className={classes.textField}
-                                margin="normal"
-                                value={values.sport}
-                                onChange={handleChange}
-                                error={!!touched.sportType && !!errors.sportType}
-                                helperText={touched.sportType && errors.sportType ? errors.sportType : ''}
-                                onBlur={handleBlur}
-                            />
+                            <FormControl className={classes.formControl}>
+                                <InputLabel shrink htmlFor="sportType">
+                                    Sport
+                                </InputLabel>
+                                <Select
+                                    name="sportType"
+                                    id="sportType"
+                                    className={classes.textField}
+                                    value={values.sportType}
+                                    onChange={handleChange}
+                                >
+                                    {data.sportTypes.map(({ id, name }) => {
+                                        return (
+                                            <MenuItem
+                                                key={id}
+                                                value={id}
+                                            >
+                                                {name}
+                                            </MenuItem>
+                                        )
+                                    })}
+                                </Select>
+                            </FormControl>
                             <TextField
                                 autoComplete="off"
                                 name="competition"
