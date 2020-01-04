@@ -78,9 +78,10 @@ class Bets extends PureComponent {
     };
 
     static async getInitialProps() {
-        const res = await api.getBets();
-        const bets = await res.json();
-        return { bets, namespacesRequired: ['bets'] };
+        const [resBets, resSportTypes] = await Promise.all([api.getBets(), api.getSportTypes()])
+        const [bets, sportTypes] = await Promise.all([resBets.json(), resSportTypes.json()]);
+
+        return { bets, sportTypes, namespacesRequired: ['bets'] };
     }
 
     onTabClick = (e, selectedTab) => {
@@ -117,7 +118,7 @@ class Bets extends PureComponent {
     };
 
     renderAvailableBets = () => {
-        const { classes, bets, t } = this.props;
+        const { classes, bets, t, sportTypes } = this.props;
         const { selectedTab } = this.state;
         return (
             <Fragment>
@@ -141,6 +142,7 @@ class Bets extends PureComponent {
                 <BetsList
                     bets={bets}
                     onBetDelete={this.onBetDelete}
+                    sportTypes={sportTypes}
                 />
             </Fragment>
         )

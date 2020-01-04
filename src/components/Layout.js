@@ -15,6 +15,7 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import ContactSupportIcon from '@material-ui/icons/ContactSupport';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -30,11 +31,28 @@ import AuthService from '../utils/AuthService';
 import withAuth from 'src/utils/withAuth';
 import { i18n } from 'src/utils/i18n';
 
+import Visa from '../../static/img/visa.svg';
+import MasterCard from '../../static/img/mastercard.svg';
+
 const drawerWidth = 240;
 
 const useStyles = makeStyles(theme => ({
     root: {
         display: 'flex',
+    },
+    paymentIcon: {
+      width: '40px',
+      height: '50px',
+      marginRight: '20px'
+    },
+    footer: {
+      width: '100%',
+      height: '50px',
+      background: '#dedede',
+      position: 'absolute',
+      bottom: 0,
+      display: 'flex',
+      justifyContent: 'flex-end'
     },
     appBar: {
         zIndex: theme.zIndex.drawer + 1,
@@ -111,17 +129,27 @@ const adminTabs = [
         Icon: BetsListIcon
     },
     {
-        name: 'Info',
-        to: '/info',
+        name: 'About us',
+        to: '/about-us',
         Icon: InfoIcon,
+    },
+    {
+        name: 'Contact us',
+        to: '/contact-us',
+        Icon: ContactSupportIcon,
     },
 ];
 
 const userTabs = [
     {
-        name: 'Info',
-        to: '/info',
+        name: 'About us',
+        to: '/about-us',
         Icon: InfoIcon,
+    },
+    {
+        name: 'Contact us',
+        to: '/contact-us',
+        Icon: ContactSupportIcon,
     },
 ];
 
@@ -166,100 +194,108 @@ function Layout(props) {
     };
 
     return (
-        <div className={classes.root}>
-            <CssBaseline />
-            <AppBar
-                position="fixed"
-                className={clsx(classes.appBar, {
-                    [classes.appBarShift]: open,
-                })}
-            >
-                <Toolbar className="flex justify-between">
-                    <div className="flex align-center">
-                        <IconButton
-                            color="inherit"
-                            aria-label="open drawer"
-                            onClick={handleDrawerOpen}
-                            edge="start"
-                            className={clsx(classes.menuButton, {
-                                [classes.hide]: open,
-                            })}
-                        >
-                            <MenuIcon />
-                        </IconButton>
-                        <Typography variant="h6" noWrap>
-                            {greeting(userName)}
-                        </Typography>
-                    </div>
-                    <div className="flex align-center justify-center">
-                        <Select
-                            className="locale-switcher"
-                            value={i18n.language}
-                            onChange={(e) => {
-                                i18n.changeLanguage(e.target.value);
-                            }}
-                        >
-                            <MenuItem value='en'>English</MenuItem>
-                            <MenuItem value='ru'>Russian</MenuItem>
-                        </Select>
-                        <Avatar
-                            alt="Remy Sharp"
-                            className={classes.avatar}
-                            onClick={() => Router.push('/profile')}
-                        >
-                            {userName.slice(0, 1)}
-                        </Avatar>
-                    </div>
-                </Toolbar>
-            </AppBar>
-            <Drawer
-                variant="permanent"
-                className={clsx(classes.drawer, {
-                    [classes.drawerOpen]: open,
-                    [classes.drawerClose]: !open,
-                })}
-                classes={{
-                    paper: clsx({
+        <div className="flex full column">
+            <div className={classes.root}>
+                <CssBaseline />
+                <AppBar
+                    position="fixed"
+                    className={clsx(classes.appBar, {
+                        [classes.appBarShift]: open,
+                    })}
+                >
+                    <Toolbar className="flex justify-between">
+                        <div className="flex align-center">
+                            <IconButton
+                                color="inherit"
+                                aria-label="open drawer"
+                                onClick={handleDrawerOpen}
+                                edge="start"
+                                className={clsx(classes.menuButton, {
+                                    [classes.hide]: open,
+                                })}
+                            >
+                                <MenuIcon />
+                            </IconButton>
+                            <Typography variant="h6" noWrap>
+                                {greeting(userName)}
+                            </Typography>
+                        </div>
+                        <div className="flex align-center justify-center">
+                            <Select
+                                className="locale-switcher"
+                                value={i18n.language}
+                                onChange={(e) => {
+                                    i18n.changeLanguage(e.target.value);
+                                }}
+                            >
+                                <MenuItem value='en'>English</MenuItem>
+                                <MenuItem value='ru'>Russian</MenuItem>
+                            </Select>
+                            <Avatar
+                                alt="Remy Sharp"
+                                className={classes.avatar}
+                                onClick={() => Router.push('/profile')}
+                            >
+                                {userName.slice(0, 1)}
+                            </Avatar>
+                        </div>
+                    </Toolbar>
+                </AppBar>
+                <Drawer
+                    variant="permanent"
+                    className={clsx(classes.drawer, {
                         [classes.drawerOpen]: open,
                         [classes.drawerClose]: !open,
-                    }),
-                }}
-                open={open}
-            >
-                <div className={classes.toolbar}>
-                    <IconButton onClick={handleDrawerClose}>
-                        {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-                    </IconButton>
-                </div>
-                <Divider />
-                <List className="full">
-                    <div className="flex full column justify-between">
-                        <div className="flex column top-nav">
-                            {tabs.map(({ name, Icon, to, onClick = () => {} })  => {
-                                return (
-                                    <Link href={to} key={name}>
-                                        <ListItem button onClick={onClick}>
-                                            <ListItemIcon>
-                                                <Icon />
-                                            </ListItemIcon>
-                                            <ListItemText primary={name} />
-                                        </ListItem>
-                                    </Link>
-                                )
-                            })}
-                        </div>
-                        <Link href="/login" key="Logout">
-                            <ListItem button onClick={AuthService.logout}>
-                                <ListItemIcon>
-                                    <LogoutIcon />
-                                </ListItemIcon>
-                                <ListItemText primary="Logout" />
-                            </ListItem>
-                        </Link>
+                    })}
+                    classes={{
+                        paper: clsx({
+                            [classes.drawerOpen]: open,
+                            [classes.drawerClose]: !open,
+                        }),
+                    }}
+                    open={open}
+                >
+                    <div className={classes.toolbar}>
+                        <IconButton onClick={handleDrawerClose}>
+                            {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+                        </IconButton>
                     </div>
-                </List>
-            </Drawer>
-            {React.cloneElement(props.children, { user: props.user })}
+                    <Divider />
+                    <List className="full">
+                        <div className="flex full column justify-between">
+                            <div className="flex column top-nav">
+                                {tabs.map(({ name, Icon, to, onClick = () => {} })  => {
+                                    return (
+                                        <Link href={to} key={name}>
+                                            <ListItem button onClick={onClick}>
+                                                <ListItemIcon>
+                                                    <Icon />
+                                                </ListItemIcon>
+                                                <ListItemText primary={name} />
+                                            </ListItem>
+                                        </Link>
+                                    )
+                                })}
+                            </div>
+                            <Link href="/login" key="Logout">
+                                <ListItem button onClick={AuthService.logout}>
+                                    <ListItemIcon>
+                                        <LogoutIcon />
+                                    </ListItemIcon>
+                                    <ListItemText primary="Logout" />
+                                </ListItem>
+                            </Link>
+                        </div>
+                    </List>
+                </Drawer>
+                {React.cloneElement(props.children, { user: props.user })}
+            </div>
+            <div className={classes.footer}>
+                <div className="payment-icons">
+                    <img src={Visa} alt="Visa" className={classes.paymentIcon} />
+                    <img src={MasterCard} alt="MasterCard" className={classes.paymentIcon} />
+                </div>
+            </div>
         </div>
     );
 }

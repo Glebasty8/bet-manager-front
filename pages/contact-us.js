@@ -20,7 +20,7 @@ const styles = {
     },
 };
 
-class Info extends PureComponent {
+class AboutUs extends PureComponent {
     render() {
         const { classes, t } = this.props;
         return (
@@ -29,6 +29,11 @@ class Info extends PureComponent {
                 <Typography variant="h1" paragraph>
                     {t('h1')}
                 </Typography>
+                <div className="flex column">
+                    <span>Email: bet.manager.ask@gmail.com</span>
+                    <span>Contact number: +380504022248</span>
+                </div>
+
             </main>
         );
     }
@@ -36,5 +41,5 @@ class Info extends PureComponent {
 
 export default compose(
     withStyles(styles),
-    withTranslation(['info'])
-)(Info);
+    withTranslation(['contact-us'])
+)(AboutUs);

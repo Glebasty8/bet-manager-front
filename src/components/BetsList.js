@@ -66,6 +66,7 @@ const BetsList = ({ bets, onBetDelete, sportTypes }) => {
                 <TableBody>
                     {bets.map(({ id, sportTypeId, competition, forecast, betAmount, coefficient, isFree, eventDate, competitors = [], status }) => {
 
+                        console.log('sportTypes', sportTypes);
                         const sportType = sportTypes.find(sportType => sportType.id === sportTypeId);
                         return (
                             <TableRow key={id}>
