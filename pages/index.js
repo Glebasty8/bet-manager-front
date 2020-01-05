@@ -166,8 +166,8 @@ class Bets extends PureComponent {
                            </Typography>
                            <form method="POST" acceptCharset="utf-8" action="https://www.liqpay.ua/api/3/checkout">
                                <input type="hidden" name="data"
-                                      value="eyJ2ZXJzaW9uIjozLCJhY3Rpb24iOiJwYXkiLCJwdWJsaWNfa2V5Ijoic2FuZGJveF9pNjYzOTE1OTY4NDUiLCJhbW91bnQiOiI1IiwiY3VycmVuY3kiOiJVQUgiLCJkZXNjcmlwdGlvbiI6Ik15IGdvb2RzIiwidHlwZSI6ImJ1eSIsImxhbmd1YWdlIjoicnUifQ=="/>
-                               <input type="hidden" name="signature" value="2ovZd2qjlwb7zPcSkqklLV9AAe8="/>
+                                      value="eyJhY3Rpb24iOiJwYXkiLCJhbW91bnQiOiIxIiwiY3VycmVuY3kiOiJVU0QiLCJkZXNjcmlwdGlvbiI6ImRlc2NyaXB0aW9uIHRleHQiLCJvcmRlcl9pZCI6IjEiLCJ2ZXJzaW9uIjoiMyIsInB1YmxpY19rZXkiOiJzYW5kYm94X2k2NjM5MTU5Njg0NSJ9"/>
+                               <input type="hidden" name="signature" value="01MqduPN6KxpfDBIouK/aoNfHIE="/>
                                <Button
                                    type="submit"
                                    variant="contained"
