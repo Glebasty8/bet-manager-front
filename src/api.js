@@ -116,8 +116,16 @@ const profileUpdate = (values) => {
 const getSportTypes = () => {
   return fetch(`${api}/sport-types`, {
     method: 'GET',
-        headers
+    headers
   })
+};
+
+// Subscriptions
+const getSubscriptions = () => {
+ return fetch(`${api}/subscription/subscriptions`, {
+   method: 'GET',
+   headers
+ })
 };
 
 export default {
@@ -143,4 +151,7 @@ export default {
 
   // Sport types
   getSportTypes,
+
+  // Subscriptions
+  getSubscriptions,
 }

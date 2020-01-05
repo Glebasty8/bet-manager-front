@@ -65,12 +65,6 @@ const styles = {
     }
 };
 
-const subscriptions = [
-    { title: 'Subscription for day', value: '200', description: 'Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica', data: 'eyJ2ZXJzaW9uIjozLCJhY3Rpb24iOiJwYXkiLCJwdWJsaWNfa2V5IjoiaTIxMDM2NzE2NjMzIiwiYW1vdW50IjoiMjAwIiwiY3VycmVuY3kiOiJSVUIiLCJkZXNjcmlwdGlvbiI6Ik15IGdvb2RzIiwidHlwZSI6ImJ1eSIsImxhbmd1YWdlIjoicnUifQ==', signature: 'LxGmSAGmZsL+gtcJWuroxVSL3pQ=' },
-    { title: 'Subscription for week', value: '400', description: 'Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica', data: 'eyJ2ZXJzaW9uIjozLCJhY3Rpb24iOiJwYXkiLCJwdWJsaWNfa2V5IjoiaTIxMDM2NzE2NjMzIiwiYW1vdW50IjoiNDAwIiwiY3VycmVuY3kiOiJSVUIiLCJkZXNjcmlwdGlvbiI6Ik15IGdvb2RzIiwidHlwZSI6ImJ1eSIsImxhbmd1YWdlIjoicnUifQ==', signature: 'Jyo8Y4JRWXaAPXk+AeyOBsAcKcw=' },
-    { title: ' Subscription for month', value: '1000', description: 'Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica', data: 'eyJ2ZXJzaW9uIjozLCJhY3Rpb24iOiJwYXkiLCJwdWJsaWNfa2V5IjoiaTIxMDM2NzE2NjMzIiwiYW1vdW50IjoiNDAwIiwiY3VycmVuY3kiOiJSVUIiLCJkZXNjcmlwdGlvbiI6Ik15IGdvb2RzIiwidHlwZSI6ImJ1eSIsImxhbmd1YWdlIjoicnUifQ==', signature: 'uJf+uHQuz2E3OEsIuQ7DmKkVMi8=' },
-];
-
 class Bets extends PureComponent {
     state = {
         selectedTab: 0,
@@ -78,10 +72,10 @@ class Bets extends PureComponent {
     };
 
     static async getInitialProps() {
-        const [resBets, resSportTypes] = await Promise.all([api.getBets(), api.getSportTypes()])
-        const [bets, sportTypes] = await Promise.all([resBets.json(), resSportTypes.json()]);
+        const [resBets, resSportTypes, resSubscriptions] = await Promise.all([api.getBets(), api.getSportTypes(), api.getSubscriptions()])
+        const [bets, sportTypes, subscriptions] = await Promise.all([resBets.json(), resSportTypes.json(), resSubscriptions.json()]);
 
-        return { bets, sportTypes, namespacesRequired: ['bets'] };
+        return { bets, sportTypes, subscriptions, namespacesRequired: ['bets'] };
     }
 
     onTabClick = (e, selectedTab) => {
@@ -149,13 +143,13 @@ class Bets extends PureComponent {
     };
 
     renderSubscriptionOptions = () => {
-        const { classes } = this.props;
+        const { classes, subscriptions } = this.props;
         return (
            <div className="flex column align-center">
                <Typography variant="h1" paragraph>
                    Subscriptions
                </Typography>
-               {subscriptions.map(({ title, value, description  }) => {
+               {subscriptions.map(({ title, value, description, data, signature }) => {
                    return (
                        <Card key={title} className={classes.card}>
                            <Typography gutterBottom variant="h5" component="h2">
@@ -166,8 +160,8 @@ class Bets extends PureComponent {
                            </Typography>
                            <form method="POST" acceptCharset="utf-8" action="https://www.liqpay.ua/api/3/checkout">
                                <input type="hidden" name="data"
-                                      value="eyJhY3Rpb24iOiJwYXkiLCJhbW91bnQiOiIxIiwiY3VycmVuY3kiOiJVU0QiLCJkZXNjcmlwdGlvbiI6ImRlc2NyaXB0aW9uIHRleHQiLCJvcmRlcl9pZCI6IjEiLCJ2ZXJzaW9uIjoiMyIsInB1YmxpY19rZXkiOiJzYW5kYm94X2k2NjM5MTU5Njg0NSJ9"/>
-                               <input type="hidden" name="signature" value="01MqduPN6KxpfDBIouK/aoNfHIE="/>
+                                      value={data}/>
+                               <input type="hidden" name="signature" value={signature}/>
                                <Button
                                    type="submit"
                                    variant="contained"
@@ -187,11 +181,12 @@ class Bets extends PureComponent {
     };
 
     render() {
-        const { classes } = this.props;
+        const { classes, subscriptions } = this.props;
         const { isInfoModalOpened } = this.state;
         const { subscription = {} } = this.props.auth.getProfile();
         const { id: subscriptionId = null, completionDate } = subscription || {};
         const isSubscriptionExpired = moment().diff(completionDate) < 0;
+        console.log('subscriptions', subscriptions);
         return (
             <main className={classes.content}>
                 <div className={classes.toolbar} />
