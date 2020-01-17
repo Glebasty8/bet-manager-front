@@ -49,7 +49,7 @@ const useStyles = makeStyles(theme => ({
       width: '100%',
       height: '50px',
       background: '#dedede',
-      position: 'absolute',
+      position: 'fixed',
       bottom: 0,
       display: 'flex',
       justifyContent: 'flex-end'
@@ -289,11 +289,11 @@ function Layout(props) {
                     </List>
                 </Drawer>
                 {React.cloneElement(props.children, { user: props.user })}
-            </div>
-            <div className={classes.footer}>
-                <div className="payment-icons">
-                    <img src={Visa} alt="Visa" className={classes.paymentIcon} />
-                    <img src={MasterCard} alt="MasterCard" className={classes.paymentIcon} />
+                <div className={classes.footer}>
+                    <div className="payment-icons">
+                        <img src={Visa} alt="Visa" className={classes.paymentIcon} />
+                        <img src={MasterCard} alt="MasterCard" className={classes.paymentIcon} />
+                    </div>
                 </div>
             </div>
         </div>

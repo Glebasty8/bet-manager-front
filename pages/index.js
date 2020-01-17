@@ -16,6 +16,7 @@ import api from 'src/api';
 import { withTranslation } from "../src/utils/i18n";
 import BetsList from 'components/BetsList';
 import { handleAuthSSR } from 'src/utils/handleAuthSSR';
+import Paper from "./users";
 
 const styles = {
     toolbar: {
@@ -24,6 +25,11 @@ const styles = {
         justifyContent: 'flex-end',
         padding: '0 8px',
         ...theme.mixins.toolbar,
+    },
+    root: {
+        width: '100%',
+        marginTop: theme.spacing(3),
+        overflowX: 'auto',
     },
     content: {
         flexGrow: 1,
@@ -192,7 +198,9 @@ class Bets extends PureComponent {
         return (
             <main className={classes.content}>
                 <div className={classes.toolbar} />
-                {isSubscription && !isSubscriptionExpired ? this.renderAvailableBets() : this.renderSubscriptionOptions()}
+                <Paper className={classes.root}>
+                    {isSubscription && !isSubscriptionExpired ? this.renderAvailableBets() : this.renderSubscriptionOptions()}
+                </Paper>
                 <Modal
                     open={isInfoModalOpened}
                     onClose={this.closeInfoModal}
