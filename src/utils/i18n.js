@@ -1,9 +1,9 @@
 import NextI18Next from 'next-i18next'
 
 const NextI18NextInstance = new NextI18Next({
-    defaultLanguage: 'en',
-    lng: 'en',
-    otherLanguages: ['ru'],
+    defaultLanguage: 'ru',
+    lng: 'ru',
+    otherLanguages: ['en'],
 });
 
 export default NextI18NextInstance

@@ -1,4 +1,7 @@
 import api from 'src/api';
+import { Cookies } from 'react-cookie';
+
+const cookies = new Cookies();
 
 class AuthService {
     login = async (creeds) => {
@@ -53,18 +56,21 @@ class AuthService {
 
     setToken(token){
         // Saves user token to localStorage
-        localStorage.setItem('token', token)
+        // localStorage.setItem('token', token)
+        cookies.set('token', token);
     }
 
     getToken(){
         // Retrieves the user token from localStorage
-        return localStorage.getItem('token')
+        // return localStorage.getItem('token')
+        console.log('cookies.get(\'token\')', cookies.get('token'));
+        return cookies.get('token')
     }
 
     static logout(){
         // Clear user token and profile data from localStorage
-        localStorage.removeItem('token');
-        localStorage.removeItem('profile');
+        // localStorage.removeItem('token');
+        cookies.remove('token')
     }
 }
 

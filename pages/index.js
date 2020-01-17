@@ -15,6 +15,7 @@ import theme from 'src/theme';
 import api from 'src/api';
 import { withTranslation } from "../src/utils/i18n";
 import BetsList from 'components/BetsList';
+import { handleAuthSSR } from 'src/utils/handleAuthSSR';
 
 const styles = {
     toolbar: {
@@ -71,8 +72,10 @@ class Bets extends PureComponent {
         isInfoModalOpened: false
     };
 
-    static async getInitialProps() {
-        const [resBets, resSportTypes, resSubscriptions] = await Promise.all([api.getBets(), api.getSportTypes(), api.getSubscriptions()])
+    static async getInitialProps(ctx) {
+        const token = await handleAuthSSR(ctx);
+
+        const [resBets, resSportTypes, resSubscriptions] = await Promise.all([api.getBets(token), api.getSportTypes(token), api.getSubscriptions(token)])
         const [bets, sportTypes, subscriptions] = await Promise.all([resBets.json(), resSportTypes.json(), resSubscriptions.json()]);
 
         return { bets, sportTypes, subscriptions, namespacesRequired: ['bets'] };
@@ -143,13 +146,13 @@ class Bets extends PureComponent {
     };
 
     renderSubscriptionOptions = () => {
-        const { classes, subscriptions } = this.props;
+        const { classes, subscriptions = [] } = this.props;
         return (
            <div className="flex column align-center">
                <Typography variant="h1" paragraph>
                    Subscriptions
                </Typography>
-               {subscriptions.map(({ title, value, description, data, signature }) => {
+               {subscriptions.map(({ title, cost, description, data, signature }) => {
                    return (
                        <Card key={title} className={classes.card}>
                            <Typography gutterBottom variant="h5" component="h2">
@@ -159,9 +162,8 @@ class Bets extends PureComponent {
                               {description}
                            </Typography>
                            <form method="POST" acceptCharset="utf-8" action="https://www.liqpay.ua/api/3/checkout">
-                               <input type="hidden" name="data"
-                                      value={data}/>
-                               <input type="hidden" name="signature" value={signature}/>
+                               <input type="hidden" name="data" value={data} />
+                               <input type="hidden" name="signature" value={signature} />
                                <Button
                                    type="submit"
                                    variant="contained"
@@ -170,7 +172,7 @@ class Bets extends PureComponent {
                                >
                                    <img src="https://static.liqpay.ua/buttons/logo-small.png" alt="arrow" name="btn_text"
                                         style={{ marginRight: '7px', verticalAlign: 'middle'}}/>
-                                   <span style={{ verticalAlign: 'middle'}}>{`Subscribe (${value}₽)`}</span>
+                                   <span style={{ verticalAlign: 'middle'}}>{`Subscribe (${cost}₽)`}</span>
                                </Button>
                            </form>
                        </Card>
@@ -181,16 +183,16 @@ class Bets extends PureComponent {
     };
 
     render() {
-        const { classes, subscriptions } = this.props;
+        const { classes } = this.props;
         const { isInfoModalOpened } = this.state;
-        const { subscription = {} } = this.props.auth.getProfile();
-        const { id: subscriptionId = null, completionDate } = subscription || {};
-        const isSubscriptionExpired = moment().diff(completionDate) < 0;
-        console.log('subscriptions', subscriptions);
+        const { subscriptions = [] } = this.props.auth.getProfile();
+        const isSubscription = subscriptions && subscriptions.length;
+        const userSubscription = isSubscription ? subscriptions[0] : null;
+        const isSubscriptionExpired = isSubscription ? moment(userSubscription.createdAt).add(userSubscription.subscription.subscriptionTimeInHours, 'hours').isBefore(moment()) : true;
         return (
             <main className={classes.content}>
                 <div className={classes.toolbar} />
-                {!subscriptionId && isSubscriptionExpired ? this.renderAvailableBets() : this.renderSubscriptionOptions()}
+                {isSubscription && !isSubscriptionExpired ? this.renderAvailableBets() : this.renderSubscriptionOptions()}
                 <Modal
                     open={isInfoModalOpened}
                     onClose={this.closeInfoModal}

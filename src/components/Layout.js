@@ -134,8 +134,8 @@ const adminTabs = [
         Icon: InfoIcon,
     },
     {
-        name: 'Contact us',
-        to: '/contact-us',
+        name: 'Terms of use',
+        to: '/terms-of-use',
         Icon: ContactSupportIcon,
     },
 ];
@@ -147,8 +147,8 @@ const userTabs = [
         Icon: InfoIcon,
     },
     {
-        name: 'Contact us',
-        to: '/contact-us',
+        name: 'Terms of use',
+        to: '/terms-of-use',
         Icon: ContactSupportIcon,
     },
 ];

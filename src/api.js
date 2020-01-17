@@ -4,10 +4,13 @@ const isProduction = process.env.NODE_ENV !== 'development';
 
 const api = isProduction ? 'https://bet-man-app2.herokuapp.com/api' : process.env.BASE_API;
 
-const headers = {
-  'Content-Type': 'application/json',
-  'Accept': 'application/json',
-  // 'Authorization': `Bearer ${localStorage.getItem('token')}`
+export const getHeaders = (token) => {
+  return {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+    // 'Authorization': `Bearer ${localStorage.getItem('token')}`
+    'Authorization': token ? `Bearer ${token}` : ''
+  }
 };
 // Bets endpoints
 
@@ -15,7 +18,7 @@ const createBet = (data) => {
   return fetch(`${api}/bets`, {
     method: 'POST',
     body: JSON.stringify(data),
-    headers
+    headers: getHeaders()
   })
 };
 
@@ -23,12 +26,15 @@ const updateBet = (betId, data) => {
   return fetch(`${api}/bets/${betId}`, {
     method: 'PUT',
     body: JSON.stringify(data),
-    headers
+    headers: getHeaders()
   })
 };
 
-const getBets = () => {
-  return fetch(`${api}/bets`)
+const getBets = (token) => {
+  return fetch(`${api}/bets`, {
+    headers: getHeaders(token),
+    method: 'GET'
+  })
 };
 
 const getBet = (betId) => {
@@ -66,7 +72,7 @@ const login = (creeds) => {
   return fetch(`${api}/auth/login`, {
     method: 'POST',
     body: JSON.stringify(creeds),
-    headers
+    headers: getHeaders()
   })
 };
 
@@ -74,7 +80,7 @@ const register = (data) => {
   return fetch(`${api}/auth/register`, {
     method: 'POST',
     body: JSON.stringify(data),
-    headers
+    headers: getHeaders()
   })
 };
 
@@ -82,7 +88,7 @@ const newPassword = (values) => {
   return fetch(`${api}/auth/new-password`, {
     method: 'POST',
     body: JSON.stringify(values),
-    headers
+    headers: getHeaders()
   })
 };
 
@@ -90,7 +96,7 @@ const forgotPassword = (values) => {
   return fetch(`${api}/auth/forgot-password`, {
     method: 'POST',
     body:  JSON.stringify(values),
-    headers
+    headers: getHeaders()
   })
 };
 
@@ -98,9 +104,16 @@ const getProfile = (token) => {
   return fetch(`${api}/auth`, {
     method: 'GET',
     headers: {
-      ...headers,
+      ...getHeaders(),
       'Authorization': `Bearer ${token}`
     },
+  })
+};
+
+const ping = (header) => {
+  return fetch(`${api}/auth/token/ping`, {
+    method: 'GET',
+    headers: header
   })
 };
 
@@ -108,23 +121,23 @@ const profileUpdate = (values) => {
   return fetch(`${api}/auth`, {
     method: 'PUT',
     body: JSON.stringify(values),
-    headers
+    headers: getHeaders()
   })
 };
 
 // Sport types endpoints
-const getSportTypes = () => {
+const getSportTypes = (token) => {
   return fetch(`${api}/sport-types`, {
     method: 'GET',
-    headers
+    headers: getHeaders(token)
   })
 };
 
 // Subscriptions
-const getSubscriptions = () => {
+const getSubscriptions = (token) => {
  return fetch(`${api}/subscription/subscriptions`, {
    method: 'GET',
-   headers
+   headers: getHeaders(token)
  })
 };
 
@@ -148,6 +161,7 @@ export default {
   forgotPassword,
   newPassword,
   profileUpdate,
+  ping,
 
   // Sport types
   getSportTypes,
