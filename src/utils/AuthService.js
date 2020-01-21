@@ -26,7 +26,7 @@ class AuthService {
         const res = await api.register(data);
         const token = await res.text();
         this.setToken(token);
-        const profile = await api.getProfile(this.getToken());
+        const profile = await api.getProfile(token);
         const profileInJSON = await profile.json();
         this.setProfile(profileInJSON);
         return profileInJSON
