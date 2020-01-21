@@ -10,13 +10,13 @@ import Card from '@material-ui/core/Card';
 import Button from '@material-ui/core/Button';
 import Modal from '@material-ui/core/Modal';
 import CloseIcon from '@material-ui/icons/Close';
+import Paper from '@material-ui/core/Paper';
 
 import theme from 'src/theme';
 import api from 'src/api';
 import { withTranslation } from "../src/utils/i18n";
 import BetsList from 'components/BetsList';
 import { handleAuthSSR } from 'src/utils/handleAuthSSR';
-import Paper from "./users";
 
 const styles = {
     toolbar: {

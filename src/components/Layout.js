@@ -26,6 +26,8 @@ import InfoIcon from '@material-ui/icons/Info';
 import Avatar from '@material-ui/core/Avatar';
 import Select from '@material-ui/core/Select';
 import { deepPurple } from '@material-ui/core/colors';
+import Snackbar from '@material-ui/core/Snackbar';
+import Slide from '@material-ui/core/Slide';
 
 import AuthService from '../utils/AuthService';
 import withAuth from 'src/utils/withAuth';
@@ -42,12 +44,12 @@ const useStyles = makeStyles(theme => ({
     },
     paymentIcon: {
       width: '40px',
-      height: '50px',
+      height: '40px',
       marginRight: '20px'
     },
     footer: {
       width: '100%',
-      height: '50px',
+      height: '40px',
       background: '#dedede',
       position: 'fixed',
       bottom: 0,
@@ -142,6 +144,11 @@ const adminTabs = [
 
 const userTabs = [
     {
+        name: 'Bets',
+        to: '/',
+        Icon: BetsListIcon
+    },
+    {
         name: 'About us',
         to: '/about-us',
         Icon: InfoIcon,
@@ -157,9 +164,14 @@ function Layout(props) {
     const classes = useStyles();
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
+    const [snack, setSnack] = React.useState(null);
     const { role, userName = '' } = props.auth.getProfile();
     const tabs = getTabsByRole(role);
 
+    function showSnackNotification(snack) {
+        setSnack(snack);
+        setTimeout(() => setSnack(null), 3000);
+    };
 
     function handleDrawerOpen() {
         setOpen(true);
@@ -175,6 +187,10 @@ function Layout(props) {
         }
         return userTabs;
     }
+
+    function transitionUp(props) {
+        return <Slide {...props} direction="up" />;
+    };
 
     const greeting = (userName) => {
         const d = new Date();
@@ -288,7 +304,16 @@ function Layout(props) {
                         </div>
                     </List>
                 </Drawer>
-                {React.cloneElement(props.children, { user: props.user })}
+                {React.cloneElement(props.children, { user: props.user, showSnackNotification })}
+                {snack && <Snackbar
+                    open={!!snack}
+                    onClose={() => setSnack(null)}
+                    TransitionComponent={transitionUp}
+                    ContentProps={{
+                        'aria-describedby': 'message-id',
+                    }}
+                    message={<span id="message-id">{snack.message}</span>}
+                />}
                 <div className={classes.footer}>
                     <div className="payment-icons">
                         <img src={Visa} alt="Visa" className={classes.paymentIcon} />

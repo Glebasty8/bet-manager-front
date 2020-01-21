@@ -70,7 +70,7 @@ class Signup extends Component {
                             .string()
                             .min(5, 'Minimum password length should be 5 symbols')
                             .required('Password is required!'),
-                        country: yup
+                        countryId: yup
                             .number()
                             .required('Country is required!'),
                     })}
@@ -108,17 +108,19 @@ class Signup extends Component {
                                         onBlur={handleBlur}
                                     />
                                     <FormControl className={classes.formControl}>
-                                        <InputLabel shrink htmlFor="country">
+                                        <InputLabel shrink htmlFor="countryId">
                                             Country
                                         </InputLabel>
                                         <Select
-                                            name="country"
-                                            id="country"
+                                            name="countryId"
+                                            id="countryId"
                                             className={classes.textField}
                                             value={values.countryId}
                                             onChange={handleChange}
+                                            error={!!touched.countryId && !!errors.countryId}
+                                            helperText={touched.countryId && errors.countryId ? errors.countryId : ''}
                                         >
-                                            {countries.map(({ id, value }) => {
+                                            {countries.map(({ id, label }) => {
                                                 return (
                                                     <MenuItem
                                                         key={id}

@@ -27,7 +27,8 @@ const styles = () => {
         textField: {
             marginLeft: theme.spacing(1),
             marginRight: theme.spacing(1),
-            width: 400,
+            minWidth: 350,
+
         },
         button: {
             margin: theme.spacing(1),

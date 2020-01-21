@@ -6,6 +6,7 @@ import { withStyles } from '@material-ui/styles';
 import theme from 'src/theme';
 import api from 'src/api';
 import CreateOrUpdateBetForm from 'components/CreateOrUpdateBetForm';
+import {handleAuthSSR} from "../src/utils/handleAuthSSR";
 
 const styles = {
     toolbar: {
@@ -22,8 +23,9 @@ const styles = {
 };
 
 class CreateBet extends Component {
-    static async getInitialProps() {
-        const res = await api.getSportTypes();
+    static async getInitialProps(ctx) {
+        const token = await handleAuthSSR(ctx);
+        const res = await api.getSportTypes(token);
         const sportTypes = await res.json();
         return { sportTypes };
     }

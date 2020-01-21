@@ -69,10 +69,7 @@ class Profile extends Component {
                     Edit Profile
                 </Typography>
                 <Formik
-                    initialValues={{
-                        ...profile,
-                        dateOfBirth: null
-                    }}
+                    initialValues={profile}
                     validationSchema={() => yup.object().shape({
                         userName: yup
                             .string()
@@ -89,6 +86,7 @@ class Profile extends Component {
                         const res = await api.updateUser(profile.id, values);
                         const updatedProfile = await res.json();
                         auth.setProfile(updatedProfile);
+                        this.props.showSnackNotification({ message: 'Profile successfully updated!' });
                         setSubmitting(false);
                     }}
                 >
@@ -102,8 +100,8 @@ class Profile extends Component {
                           handleBlur,
                           touched,
                           setFieldValue,
+                          pristine
                       }) => {
-
                         return (
                             <form
                                 autoComplete="off"
@@ -192,7 +190,7 @@ class Profile extends Component {
                                         variant="contained"
                                         color="primary"
                                         className={classes.button}
-                                        disabled={isSubmitting || !dirty}
+                                        disabled={isSubmitting || !dirty || pristine}
                                     >
                                         Update
                                     </Button>
