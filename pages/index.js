@@ -193,8 +193,9 @@ class Bets extends PureComponent {
         const { isInfoModalOpened } = this.state;
         const { subscriptions = [] } = this.props.auth.getProfile();
         const isSubscription = subscriptions && subscriptions.length;
-        const userSubscription = isSubscription ? subscriptions[0] : null;
-        const isSubscriptionExpired = isSubscription ? moment(userSubscription.createdAt).add(userSubscription.subscription.subscriptionTimeInHours, 'hours').isBefore(moment()) : true;
+        const isSubscriptionExpired = !!subscriptions.find(subscription => {
+            return moment(subscription.createdAt).add(subscription.subscription.subscriptionTimeInHours, 'hours').isBefore(moment())
+        });
         return (
             <main className={classes.content}>
                 <div className={classes.toolbar} />
