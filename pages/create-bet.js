@@ -35,7 +35,6 @@ class CreateBet extends Component {
         const payload = {
             userId: id,
             ...values,
-            sportTypeId: values.sportType
         };
 
         const res = await api.createBet(payload);

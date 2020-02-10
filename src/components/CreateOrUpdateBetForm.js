@@ -47,7 +47,7 @@ const CreateOrUpdateBetForm = ({ initialValues, onSubmit, data, submitLabel = 'C
                 competitors: yup.array()
                     .of(yup.string().required('Competitor is required'))
                     .min(1, 'Minimum of 1 competitor'),
-                sportType: yup
+                sportTypeId: yup
                     .string()
                     .required('Sport is required'),
                 competition: yup
@@ -76,6 +76,7 @@ const CreateOrUpdateBetForm = ({ initialValues, onSubmit, data, submitLabel = 'C
                   isSubmitting,
                   setFieldValue
               }) => {
+                console.log('errors', errors);
                 return (
                     <form
                         onSubmit={handleSubmit}

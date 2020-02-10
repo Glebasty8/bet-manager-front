@@ -63,7 +63,6 @@ class AuthService {
     getToken(){
         // Retrieves the user token from localStorage
         // return localStorage.getItem('token')
-        console.log('cookies.get(\'token\')', cookies.get('token'));
         return cookies.get('token')
     }
 
