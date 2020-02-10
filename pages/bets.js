@@ -11,6 +11,7 @@ import { withTranslation } from 'src/utils/i18n';
 import theme from 'src/theme';
 import api from 'src/api';
 import BetsList from 'components/BetsList';
+import {handleAuthSSR} from "../src/utils/handleAuthSSR";
 
 const styles = {
     toolbar: {
@@ -26,8 +27,10 @@ const styles = {
 };
 
 class Bets extends PureComponent {
-    static async getInitialProps() {
-        const [resBets, resSportTypes] = await Promise.all([api.getBets(), api.getSportTypes()])
+    static async getInitialProps(ctx) {
+        const token = await handleAuthSSR(ctx);
+
+        const [resBets, resSportTypes] = await Promise.all([api.getBets(token), api.getSportTypes(token)])
         const [bets, sportTypes] = await Promise.all([resBets.json(), resSportTypes.json()]);
 
         return { bets, sportTypes, namespacesRequired: ['bets'] };
@@ -40,8 +43,6 @@ class Bets extends PureComponent {
 
     render() {
         const { classes, bets, sportTypes, t } = this.props;
-        console.log('bets', bets);
-        console.log('sportTypes', sportTypes);
         return (
             <main className={classes.content}>
                 <div className={classes.toolbar} />
