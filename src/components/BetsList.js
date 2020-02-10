@@ -101,7 +101,7 @@ const BetsList = ({ bets, onBetDelete, sportTypes }) => {
                                         </TableCell>
                                         <TableCell align="left">
                                             <DeleteIcon
-                                                onClick={() => this.onDeleteBet(id)}
+                                                onClick={() => onBetDelete(id)}
                                                 className="icon"
                                             />
                                         </TableCell>

@@ -49,7 +49,6 @@ class CreateBet extends Component {
     render() {
         const { classes, sportTypes } = this.props;
 
-        console.log('sportTypes', sportTypes);
         return (
             <main className={classes.content}>
                 <div className={classes.toolbar} />
@@ -61,6 +60,7 @@ class CreateBet extends Component {
                     data={{
                         sportTypes
                     }}
+                    submitLabel="Create Bet"
                 />
             </main>
         );

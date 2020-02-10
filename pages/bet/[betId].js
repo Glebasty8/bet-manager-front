@@ -8,6 +8,7 @@ import theme from 'src/theme';
 import api from 'src/api';
 import { withTranslation } from 'src/utils/i18n';
 import CreateOrUpdateBetForm from 'components/CreateOrUpdateBetForm';
+import {handleAuthSSR} from "../../src/utils/handleAuthSSR";
 
 const styles = {
     toolbar: {
@@ -25,10 +26,17 @@ const styles = {
 
 class Index extends PureComponent {
     static async getInitialProps({ query }) {
-        const { betId } = query;
+
         const res = await api.getBet(betId);
         const bet = await res.json();
-        return { bet };
+    }
+    static async getInitialProps(ctx) {
+        const { betId } = ctx.query;
+        const token = await handleAuthSSR(ctx);
+        const [resBet, resSportTypes] = await Promise.all([api.getBet(betId), api.getSportTypes(token)]);
+        const [bet, sportTypes] = await Promise.all([resBet.json(), resSportTypes.json()]);
+
+        return { bet, sportTypes };
     }
 
     onBetUpdate = async (values, { setSubmitting }) => {
@@ -41,7 +49,7 @@ class Index extends PureComponent {
     };
 
     render() {
-        const { classes, bet, t } = this.props;
+        const { classes, bet, t, sportTypes } = this.props;
         return (
             <main className={classes.content}>
                 <div className={classes.toolbar} />
@@ -51,6 +59,10 @@ class Index extends PureComponent {
                 <CreateOrUpdateBetForm
                     onSubmit={this.onBetUpdate}
                     initialValues={bet}
+                    data={{
+                        sportTypes
+                    }}
+                    submitLabel="Update Bet"
                 />
             </main>
         );

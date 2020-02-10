@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => createStyles({
     }
 }));
 
-const CreateOrUpdateBetForm = ({ initialValues, onSubmit, data }) => {
+const CreateOrUpdateBetForm = ({ initialValues, onSubmit, data, submitLabel = 'Create Bet' }) => {
     const classes = useStyles();
     return (
         <Formik
@@ -134,10 +134,10 @@ const CreateOrUpdateBetForm = ({ initialValues, onSubmit, data }) => {
                                     Sport
                                 </InputLabel>
                                 <Select
-                                    name="sportType"
-                                    id="sportType"
+                                    name="sportTypeId"
+                                    id="sportTypeId"
                                     className={classes.textField}
-                                    value={values.sportType}
+                                    value={values.sportTypeId}
                                     onChange={handleChange}
                                 >
                                     {data.sportTypes.map(({ id, name }) => {
@@ -255,7 +255,7 @@ const CreateOrUpdateBetForm = ({ initialValues, onSubmit, data }) => {
                                 className={classes.button}
                                 disabled={isSubmitting}
                             >
-                                Create Bet
+                               {submitLabel}
                             </Button>
                         </FormControl>
                     </form>
