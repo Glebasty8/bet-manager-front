@@ -28,12 +28,11 @@ const styles = {
     },
     root: {
         width: '100%',
-        marginTop: theme.spacing(3),
+        padding: theme.spacing(1),
         overflowX: 'auto',
     },
     content: {
         flexGrow: 1,
-        padding: theme.spacing(3),
     },
     tabs: {
         marginBottom: '20px'
@@ -41,7 +40,7 @@ const styles = {
     card: {
         minWidth: 400,
         width: 500,
-        height: 170,
+        height: 190,
         marginBottom: 30,
         display: 'flex',
         flexDirection: 'column',
@@ -155,8 +154,8 @@ class Bets extends PureComponent {
         const { classes, subscriptions = [] } = this.props;
         return (
            <div className="flex column align-center">
-               <Typography variant="h1" paragraph>
-                   Subscriptions
+               <Typography variant="h4" paragraph align="center">
+                   Подписки на описания с прогнозами к предстоящим спортивным событиям
                </Typography>
                {subscriptions.map(({ title, cost, description, data, signature }) => {
                    return (
