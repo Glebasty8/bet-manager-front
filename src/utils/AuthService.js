@@ -12,7 +12,7 @@ class AuthService {
         }
         const token = await res.text();
         this.setToken(token);
-        const profileRes = await api.getProfile(this.getToken());
+        const profileRes = await api.getProfile(token);
         const profile = await profileRes.json();
         if (!profileRes.ok && profileRes.status === 400) {
             return await res.json()

@@ -1,14 +1,11 @@
 import fetch from 'isomorphic-unfetch';
 
-const isProduction = process.env.NODE_ENV !== 'development';
-
-const api = isProduction ? 'https://bet-man-app2.herokuapp.com/api' : process.env.BASE_API;
+const api = process.env.BASE_API;
 
 export const getHeaders = (token) => {
   return {
     'Content-Type': 'application/json',
     'Accept': 'application/json',
-    // 'Authorization': `Bearer ${localStorage.getItem('token')}`
     'Authorization': token ? `Bearer ${token}` : ''
   }
 };
@@ -101,6 +98,7 @@ const forgotPassword = (values) => {
 };
 
 const getProfile = (token) => {
+  console.log('token', token)
   return fetch(`${api}/auth`, {
     method: 'GET',
     headers: {
