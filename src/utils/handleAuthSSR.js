@@ -11,7 +11,7 @@ export async function handleAuthSSR(ctx) {
     if (ctx.req) {
         // ugly way to get cookie value from a string of values
         // good enough for demostration
-        token = ctx.req.headers.cookie.replace(/(?:(?:^|.*;\s*)token\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+        token = ctx.req.headers.cookie ? ctx.req.headers.cookie.replace(/(?:(?:^|.*;\s*)token\s*\=\s*([^;]*).*$)|^.*$/, "$1") : null;
     }
     else {
         // we dont have request info aka Client Side
